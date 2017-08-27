@@ -1,15 +1,28 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: judzhin
- * Date: 8/27/17
- * Time: 2:43 PM
+ * @access protected
+ * @author Judzhin Miles <info[woof-woof]msbios.com>
  */
 
 namespace MSBios\CPanel\Doctrine;
 
 
-class Module
+use MSBios\ModuleInterface;
+
+/**
+ * Class Module
+ * @package MSBios\CPanel\Doctrine
+ */
+class Module implements ModuleInterface
 {
 
+    const VERSION = '0.0.1';
+
+    /**
+     * @return mixed
+     */
+    public function getConfig()
+    {
+        return include __DIR__ . '/../config/module.config.php';
+    }
 }

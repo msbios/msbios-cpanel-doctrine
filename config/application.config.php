@@ -30,6 +30,7 @@ return [
         'MSBios\Authentication',
         'MSBios\Guard',
         'MSBios\CPanel',
+        'MSBios\CPanel\Doctrine',
         'MSBios\Guard\CPanel',
         'MSBios\Guard\Resource',
 

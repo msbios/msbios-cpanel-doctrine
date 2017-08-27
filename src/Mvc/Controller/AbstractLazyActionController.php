@@ -6,6 +6,10 @@
 
 namespace MSBios\CPanel\Doctrine\Mvc\Controller;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use MSBios\CPanel\Mvc\Controller\AbstractLazyActionController as DefaultAbstractLazyActionController;
 use MSBios\Resource\Entity;
 
@@ -23,6 +27,21 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController
 
     /** @const EVENT_REMOVE_OBJECT */
     const EVENT_REMOVE_OBJECT = 'remove.object';
+
+    /**
+     * @return DoctrineAdapter
+     */
+    protected function getPaginatorAdapter()
+    {
+         /** @var EntityRepository $entityRepository */
+         $entityRepository = $this->getEntityManager()
+             ->getRepository($this->getResourceClassName());
+
+         /** @var QueryBuilder $queryBuilder */
+         $queryBuilder = $entityRepository->createQueryBuilder('resource');
+
+         return new DoctrineAdapter(new ORMPaginator($queryBuilder));
+    }
 
     /**
      * @param array $values
