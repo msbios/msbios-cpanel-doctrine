@@ -86,10 +86,7 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController
     protected function current()
     {
         return $this->getEntityManager()
-            ->find(
-                $this->getResourceClassName(),
-                $this->params()->fromRoute('id', 0)
-            );
+            ->find($this->getResourceClassName(), $this->params()->fromRoute('id', 0));
     }
 
 }
