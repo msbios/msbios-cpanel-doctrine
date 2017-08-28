@@ -128,6 +128,8 @@ return [
                 'template_map' => [
                     'ms-bios/c-panel/doctrine/layout/index' =>
                         './vendor/msbios/cpanel/themes/limitless/view/ms-bios/c-panel/layout/index.phtml',
+                    'ms-bios/c-panel/doctrine/layout/add' =>
+                        './vendor/msbios/cpanel/themes/limitless/view/ms-bios/c-panel/layout/add.phtml',
                     'ms-bios/c-panel/doctrine/layout/edit' =>
                         './vendor/msbios/cpanel/themes/limitless/view/ms-bios/c-panel/layout/edit.phtml',
                 ],
@@ -139,9 +141,8 @@ return [
         'controllers' => [ // key controller
             Controller\LayoutController::class => [
                 'resource' => \MSBios\CPanel\Controller\LayoutController::class,
-                // 'route_name' => 'cpanel/layout',
                 'resource_class' => \MSBios\Resource\Entity\Layout::class,
-                'form_element' => \MSBios\Resource\Form\LayoutForm::class
+                'form_element' => \MSBios\Resource\Form\LayoutForm::class,
             ],
             // Controller\ModuleController::class => [
             //     'resource' => Controller\ModuleController::class,

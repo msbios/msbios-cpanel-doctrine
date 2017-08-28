@@ -15,6 +15,7 @@ use MSBios\Resource\Entity;
 use Zend\Form\FormInterface;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Paginator\Paginator;
+use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -84,17 +85,19 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController
 
         if ($request->isPost()) {
 
-            /** @var array $data */
-            $data = $request->getPost();
-            $form->setData($data);
+            /** @var Parameters $parameters */
+            $parameters = $request->getPost();
+            $form->setData($parameters);
+
             if ($form->isValid()) {
 
                 /** @var Entity $entity */
                 $entity = $form->getObject();
 
                 // fire event
-                $this->getEventManager()
-                    ->trigger(self::EVENT_PERSIST_OBJECT, $this, ['entity' => $entity, 'data' => $data]);
+                $this->getEventManager()->trigger(
+                    self::EVENT_PERSIST_OBJECT, $this, ['entity' => $entity, 'data' => $parameters]
+                );
 
                 $this->getEntityManager()->persist($entity);
                 $this->getEntityManager()->flush();
@@ -126,7 +129,7 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController
             $this->getResourceClassName(), $id
         );
 
-        if (! $object) {
+        if (!$object) {
             return $this->redirect()->toRoute(
                 $this->getRouteName()
             );
@@ -149,11 +152,10 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController
                 $entity = $form->getObject();
 
                 // fire event
-                $this->getEventManager()->trigger(self::EVENT_MERGE_OBJECT, $this, [
-                    'object' => $object,
-                    'entity' => $entity,
-                    'data' => $parameters
-                ]);
+                $this->getEventManager()->trigger(
+                    self::EVENT_MERGE_OBJECT,
+                    $this, ['object' => $object, 'entity' => $entity, 'data' => $parameters]
+                );
 
                 $this->getEntityManager()->merge($entity);
                 $this->getEntityManager()->flush();
@@ -188,8 +190,9 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController
         /** @var int $id */
         if ($object) {
             // fire event
-            $this->getEventManager()
-                ->trigger(self::EVENT_REMOVE_OBJECT, $this, ['object' => $object]);
+            $this->getEventManager()->trigger(
+                self::EVENT_REMOVE_OBJECT, $this, ['object' => $object]
+            );
 
             $this->getEntityManager()->remove($object);
             $this->getEntityManager()->flush();
