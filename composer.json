@@ -39,7 +39,7 @@
     "msbios/guard": "^0.0.17",
     "msbios/guard-resource": "^0.0.6",
     "msbios/guard-cpanel": "^0.0.3",
-    "msbios/cpanel": "^0.0.15",
+    "msbios/cpanel": "^0.0.18",
     "msbios/resource": "^0.0.1",
     "msbios/debug": "^0.0.3"
   },

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d2b0d68a21a270590036632c166e190",
+    "content-hash": "5208009440d1007fc23747e83619b0e1",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -2087,16 +2087,16 @@
         },
         {
             "name": "msbios/cpanel",
-            "version": "v0.0.15",
+            "version": "v0.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/msbios/msbios-cpanel.git",
-                "reference": "13e921b2bd76017bc530450017fde1ff3cb240e3"
+                "reference": "89c787474ce2dd52bf08fdf07d2c9ac5acee672e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/msbios/msbios-cpanel/zipball/13e921b2bd76017bc530450017fde1ff3cb240e3",
-                "reference": "13e921b2bd76017bc530450017fde1ff3cb240e3",
+                "url": "https://api.github.com/repos/msbios/msbios-cpanel/zipball/89c787474ce2dd52bf08fdf07d2c9ac5acee672e",
+                "reference": "89c787474ce2dd52bf08fdf07d2c9ac5acee672e",
                 "shasum": ""
             },
             "require": {
@@ -2139,7 +2139,7 @@
             "keywords": [
                 "php"
             ],
-            "time": "2017-08-27T19:40:25+00:00"
+            "time": "2017-08-28T18:17:33+00:00"
         },
         {
             "name": "msbios/debug",

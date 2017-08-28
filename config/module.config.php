@@ -112,11 +112,34 @@ return [
         ]
     ],
 
+    //'view_manager' => [
+    //    'template_map' => [
+    //        'ms-bios/c-panel/doctrine/layout/index' => 'ms-bios/c-panel/layout/index'
+    //    ],
+    //    'template_path_stack' => [
+    //        __DIR__ . '/../view',
+    //    ],
+    //],
+
+    \MSBios\Theme\Module::class => [
+
+        'themes' => [
+            'limitless' => [
+                'template_map' => [
+                    'ms-bios/c-panel/doctrine/layout/index' =>
+                        './vendor/msbios/cpanel/themes/limitless/view/ms-bios/c-panel/layout/index.phtml',
+                    'ms-bios/c-panel/doctrine/layout/edit' =>
+                        './vendor/msbios/cpanel/themes/limitless/view/ms-bios/c-panel/layout/edit.phtml',
+                ],
+            ],
+        ]
+    ],
+
     \MSBios\CPanel\Module::class => [
         'controllers' => [ // key controller
             Controller\LayoutController::class => [
                 'resource' => \MSBios\CPanel\Controller\LayoutController::class,
-                'route_name' => 'cpanel/layout',
+                // 'route_name' => 'cpanel/layout',
                 'resource_class' => \MSBios\Resource\Entity\Layout::class,
                 'form_element' => \MSBios\Resource\Form\LayoutForm::class
             ],

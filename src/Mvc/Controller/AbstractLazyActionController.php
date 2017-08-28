@@ -12,6 +12,10 @@ use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use MSBios\CPanel\Mvc\Controller\AbstractLazyActionController as DefaultAbstractLazyActionController;
 use MSBios\Resource\Entity;
+use Zend\Form\FormInterface;
+use Zend\Http\PhpEnvironment\Request;
+use Zend\Paginator\Paginator;
+use Zend\View\Model\ViewModel;
 
 /**
  * Class AbstractLazyActionController
@@ -29,83 +33,171 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController
     const EVENT_REMOVE_OBJECT = 'remove.object';
 
     /**
-     * @return DoctrineAdapter
+     * @return \Zend\Http\Response|ViewModel
      */
-    protected function getPaginatorAdapter()
+    public function indexAction()
     {
-         /** @var EntityRepository $entityRepository */
-         $entityRepository = $this->getEntityManager()
-             ->getRepository($this->getResourceClassName());
+        /** @var EntityRepository $entityRepository */
+        $entityRepository = $this->getEntityManager()->getRepository(
+            $this->getResourceClassName()
+        );
 
-         /** @var QueryBuilder $queryBuilder */
-         $queryBuilder = $entityRepository->createQueryBuilder('resource');
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $entityRepository->createQueryBuilder('resource');
 
-         return new DoctrineAdapter(new ORMPaginator($queryBuilder));
-    }
+        /** @var Paginator $paginator */
+        $paginator = (new Paginator(
+            new DoctrineAdapter(
+                new ORMPaginator($queryBuilder)
+            )
+        ))->setItemCountPerPage($this->getOptions()->get('item_count_per_page'));
 
-    /**
-     * @param array $values
-     */
-    protected function persistData(array $values)
-    {
-        /** @var Entity $entity */
-        $entity = $this->getFormElement()
-            ->getObject();
-
-        // fire event
-        $this->getEventManager()->trigger(self::EVENT_PERSIST_OBJECT, $this, [
-            'entity' => $entity, 'values' => $values
-        ]);
-
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
-    }
-
-    /**
-     * @param $object
-     * @param array $values
-     */
-    protected function mergeData($object, array $values)
-    {
-        /** @var Entity $entity */
-        $entity = $this->getFormElement()
-            ->getObject();
-
-        // fire event
-        $this->getEventManager()->trigger(self::EVENT_MERGE_OBJECT, $this, [
-            'object' => $object,
-            'entity' => $entity,
-            'values' => $values
-        ]);
-
-        $this->getEntityManager()->merge($entity);
-        $this->getEntityManager()->flush();
-    }
-
-    /**
-     * @param $id
-     */
-    protected function dropData($id)
-    {
-        /** @var Entity $entity */
-        if ($entity = $this->current()) {
-
-            $this->getEventManager()->trigger(self::EVENT_REMOVE_OBJECT, $this, [
-                'object' => $entity
-            ]);
-
-            $this->getEntityManager()->remove($entity);
-            $this->getEntityManager()->flush();
+        /** @var int $page */
+        $page = (int)$this->params()->fromQuery('page');
+        if ($page) {
+            $paginator->setCurrentPageNumber($page);
         }
+
+        return new ViewModel([
+            'paginator' => $paginator,
+            'config' => $this->getOptions()
+        ]);
     }
 
     /**
-     * @return object
+     * @return \Zend\Http\Response|ViewModel
      */
-    protected function current()
+    public function addAction()
     {
-        return $this->getEntityManager()
-            ->find($this->getResourceClassName(), $this->params()->fromRoute('id', 0));
+        /** @var int $id */
+        if ($id = $this->params()->fromRoute('id')) {
+            return $this->redirect()->toRoute(
+                $this->getRouteName(), ['action' => 'add']
+            );
+        }
+
+        /** @var FormInterface $form */
+        $form = $this->getFormElement();
+
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+
+            /** @var array $data */
+            $data = $request->getPost();
+            $form->setData($data);
+            if ($form->isValid()) {
+
+                /** @var Entity $entity */
+                $entity = $form->getObject();
+
+                // fire event
+                $this->getEventManager()
+                    ->trigger(self::EVENT_PERSIST_OBJECT, $this, ['entity' => $entity, 'data' => $data]);
+
+                $this->getEntityManager()->persist($entity);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()
+                    ->addSuccessMessage('Entity has been create');
+
+                return $this->redirect()->toRoute($this->getRouteName());
+            }
+        }
+
+        $form->setAttribute(
+            'action', $this->url()->fromRoute($this->getRouteName(), ['action' => 'add'])
+        );
+
+        return new ViewModel(['form' => $form]);
     }
 
+    /**
+     * @return \Zend\Http\Response|ViewModel
+     */
+    public function editAction()
+    {
+        /** @var int $id */
+        $id = (int)$this->params()->fromRoute('id', 0);
+
+        /** @var Object $object */
+        $object = $this->getEntityManager()->find(
+            $this->getResourceClassName(), $id
+        );
+
+        if (! $object) {
+            return $this->redirect()->toRoute(
+                $this->getRouteName()
+            );
+        }
+
+        /** @var FormInterface $form */
+        $form = $this->getFormElement()->bind(clone $object);
+
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+
+            /** @var array $parameters */
+            $parameters = $request->getPost();
+            $form->setData($parameters);
+            if ($form->isValid()) {
+
+                /** @var Entity $entity */
+                $entity = $form->getObject();
+
+                // fire event
+                $this->getEventManager()->trigger(self::EVENT_MERGE_OBJECT, $this, [
+                    'object' => $object,
+                    'entity' => $entity,
+                    'data' => $parameters
+                ]);
+
+                $this->getEntityManager()->merge($entity);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()
+                    ->addSuccessMessage('Entity has been update');
+
+                return $this->redirect()
+                    ->toRoute($this->getOptions()->get('route_name'));
+            }
+        }
+
+        $form->setAttribute(
+            'action', $this->url()->fromRoute($this->getRouteName(), ['action' => 'edit', 'id' => $id])
+        );
+
+        return new ViewModel([
+            'object' => $object, 'form' => $form
+        ]);
+    }
+
+    /**
+     * @return \Zend\Http\Response
+     */
+    public function dropAction()
+    {
+        /** @var Entity\ $object */
+        $object = $this->entityManager->find(
+            $this->getRouteName(), $this->params()->fromRoute('id', 0)
+        );
+
+        /** @var int $id */
+        if ($object) {
+            // fire event
+            $this->getEventManager()
+                ->trigger(self::EVENT_REMOVE_OBJECT, $this, ['object' => $object]);
+
+            $this->getEntityManager()->remove($object);
+            $this->getEntityManager()->flush();
+
+            $this->flashMessenger()
+                ->addSuccessMessage('Entity has been removed');
+        }
+
+        return $this->redirect()->toRoute($this->getRouteName());
+    }
 }
