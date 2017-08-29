@@ -13,4 +13,11 @@ use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
  */
 class RouteController extends AbstractLazyActionController
 {
+    /**
+     * @return string
+     */
+    public function getResourceId()
+    {
+        return \MSBios\CPanel\Controller\RouteController::class;
+    }
 }

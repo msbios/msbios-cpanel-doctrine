@@ -4,7 +4,7 @@
  * @author Judzhin Miles <info[woof-woof]msbios.com>
  *
  */
-namespace MSBios\CPanel\Controller;
+namespace MSBios\CPanel\Doctrine\Controller;
 
 use MSBios\CPanel\Mvc\Controller\ActionControllerInterface;
 use MSBios\Guard\GuardAwareInterface;
@@ -13,7 +13,7 @@ use Zend\View\Model\ViewModel;
 
 /**
  * Class IndexController
- * @package MSBios\CPanel\Controller
+ * @package MSBios\CPanel\Doctrine\Controller
  */
 class IndexController extends AbstractActionController implements
     ActionControllerInterface,

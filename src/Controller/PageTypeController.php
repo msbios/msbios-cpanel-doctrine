@@ -13,5 +13,11 @@ use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
  */
 class PageTypeController extends AbstractLazyActionController
 {
-
+    /**
+     * @return string
+     */
+    public function getResourceId()
+    {
+        return \MSBios\CPanel\Controller\PageTypeController::class;
+    }
 }

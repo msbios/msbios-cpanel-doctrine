@@ -13,4 +13,11 @@ use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
  */
 class ThemeController extends AbstractLazyActionController
 {
+    /**
+     * @return string
+     */
+    public function getResourceId()
+    {
+        return \MSBios\CPanel\Controller\ThemeController::class;
+    }
 }
