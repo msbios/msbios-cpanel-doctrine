@@ -1,0 +1,50 @@
+<?php
+/**
+ * @access protected
+ * @author Judzhin Miles <info[woof-woof]msbios.com>
+ */
+namespace MSBios\CPanel;
+
+/** @var \Zend\Form\Form $form */
+$form = $this->form;
+$form->prepare();
+?>
+
+<div class="panel panel-flat">
+
+    <div class="panel-body">
+
+        <?= $this->form()->openTag($form->setAttributes([
+            'class' => 'form-horizontal',
+            'role' => 'form'
+        ])); ?>
+
+        <?= $this->partial('partial/element.phtml', [
+            'element' => $form->get('title')
+                ->setAttributes([
+                    'required' => 'required',
+                    'placeholder' => $this->translate('Enter layout title')
+                ]),
+            'label' => $this->translate('Title'),
+        ]); ?>
+
+        <?= $this->partial('partial/element.phtml', [
+            'element' => $form->get('template')
+                ->setAttributes([
+                    'required' => 'required',
+                    'placeholder' => $this->translate('Enter layout identifier')
+                ]),
+            'label' => $this->translate('Template')
+        ]); ?>
+
+        <div class="text-right">
+            <button type="reset" class="btn btn-default">Reset</button>
+            <button type="submit" class="btn btn-primary">
+                Submit
+                <i class="icon-arrow-right14 position-right"></i>
+            </button>
+        </div>
+
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>

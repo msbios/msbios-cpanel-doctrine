@@ -1,0 +1,74 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MSBios CMS by Judzhin Miles\n"
+"POT-Creation-Date: 2017-05-03 16:16+0300\n"
+"PO-Revision-Date: 2017-05-03 16:17+0300\n"
+"Last-Translator: \n"
+"Language-Team: MSBios Team <info@msbios.com>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: _;translate;addSuccessMessage\n"
+"X-Poedit-SearchPath-0: config\n"
+"X-Poedit-SearchPath-1: src\n"
+
+#: config/module.config.php:212
+msgid "Resources"
+msgstr ""
+
+#: config/module.config.php:215
+msgid "Roles"
+msgstr ""
+
+#: config/module.config.php:222
+msgid "System"
+msgstr ""
+
+#: config/module.config.php:227
+msgid "Setting"
+msgstr ""
+
+#: config/module.config.php:230
+msgid "Layouts"
+msgstr ""
+
+#: config/module.config.php:233
+msgid "Modules"
+msgstr ""
+
+#: config/module.config.php:236
+msgid "Page Types"
+msgstr ""
+
+#: config/module.config.php:239
+msgid "Routes"
+msgstr ""
+
+#: config/module.config.php:242
+msgid "Themes"
+msgstr ""
+
+#: config/module.config.php:245
+msgid "Widgets"
+msgstr ""
+
+#: src/Mvc/Controller/AbstractActionController.php:83
+msgid "Entities has been removed"
+msgstr ""
+
+#: src/Mvc/Controller/AbstractActionController.php:157
+msgid "Entity has been create"
+msgstr ""
+
+#: src/Mvc/Controller/AbstractActionController.php:221
+msgid "Entity has been update"
+msgstr ""
+
+#: src/Mvc/Controller/AbstractActionController.php:260
+msgid "Entity has been removed"
+msgstr ""

@@ -22,26 +22,16 @@ return [
                         'options' => [
                             'defaults' => [
                                 'controller' => Controller\LayoutController::class,
-                            ],
-                            'constraints' => [
-                                'action' => 'add|edit|drop',
-                                'id' => '[0-9]+'
                             ]
                         ]
                     ],
-                    //'module' => [
-                    //    'type' => Segment::class,
-                    //    'options' => [
-                    //        'route' => 'module[/[:action[/[:id[/]]]]]',
-                    //        'defaults' => [
-                    //            'controller' => Controller\ModuleController::class,
-                    //        ],
-                    //        'constraints' => [
-                    //            'action' => 'add|edit|drop',
-                    //            'id' => '[0-9]+'
-                    //        ]
-                    //    ]
-                    //],
+                    'module' => [
+                        'options' => [
+                            'defaults' => [
+                                'controller' => Controller\ModuleController::class,
+                            ]
+                        ]
+                    ],
                     //'page-type' => [
                     //    'type' => Segment::class,
                     //    'options' => [
@@ -103,8 +93,8 @@ return [
 
         'factories' => [
             // Controller\IndexController::class => Factory\LazyActionControllerFactory::class,
-            Controller\LayoutController::class => \MSBios\CPanel\Factory\LazyActionControllerFactory::class,
-            //Controller\ModuleController::class => Factory\LazyActionControllerFactory::class,
+            Controller\LayoutController::class => Factory\LazyActionControllerFactory::class,
+            Controller\ModuleController::class => Factory\LazyActionControllerFactory::class,
             //Controller\PageTypeController::class => Factory\LazyActionControllerFactory::class,
             //Controller\RouteController::class => Factory\LazyActionControllerFactory::class,
             //Controller\SettingController::class => Factory\LazyActionControllerFactory::class,
@@ -125,13 +115,31 @@ return [
 
         'themes' => [
             'limitless' => [
+                // Template Map
                 'template_map' => [
-                    'ms-bios/c-panel/doctrine/layout/index' =>
-                        './vendor/msbios/cpanel/themes/limitless/view/ms-bios/c-panel/layout/index.phtml',
-                    'ms-bios/c-panel/doctrine/layout/add' =>
-                        './vendor/msbios/cpanel/themes/limitless/view/ms-bios/c-panel/layout/add.phtml',
-                    'ms-bios/c-panel/doctrine/layout/edit' =>
-                        './vendor/msbios/cpanel/themes/limitless/view/ms-bios/c-panel/layout/edit.phtml',
+                ],
+                // Template Path Stack
+                'template_path_stack' => [
+                    __DIR__ . '/../themes/limitless/view/',
+                ],
+                // Controller map
+                'controller_map' => [
+                ],
+                // Translation file patterns
+                'translation_file_patterns' => [
+                    [
+                        'type' => 'gettext',
+                        'base_dir' => __DIR__ . '/../themes/limitless/language/',
+                        'pattern' => '%s.mo',
+                    ],
+                ],
+                // Widget manager
+                'widget_manager' => [
+                    'template_map' => [
+                    ],
+                    'template_path_stack' => [
+                        __DIR__ . '/../themes/limitless/widget/'
+                    ],
                 ],
             ],
         ]
@@ -144,12 +152,11 @@ return [
                 'resource_class' => \MSBios\Resource\Entity\Layout::class,
                 'form_element' => \MSBios\Resource\Form\LayoutForm::class,
             ],
-            // Controller\ModuleController::class => [
-            //     'resource' => Controller\ModuleController::class,
-            //     'route_name' => 'cpanel/module',
-            //     'resource_class' => \MSBios\Resource\Entity\Module::class,
-            //     'form_element' => \MSBios\Resource\Form\ModuleForm::class
-            // ],
+             Controller\ModuleController::class => [
+                 'resource' => \MSBios\CPanel\Controller\ModuleController::class,
+                 'resource_class' => \MSBios\Resource\Entity\Module::class,
+                 'form_element' => \MSBios\Resource\Form\ModuleForm::class
+             ],
             // Controller\PageTypeController::class => [
             //     'resource' => Controller\PageTypeController::class,
             //     'route_name' => 'cpanel/page-type',

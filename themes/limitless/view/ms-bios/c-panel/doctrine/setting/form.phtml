@@ -1,0 +1,76 @@
+<?php
+/**
+ * @access protected
+ * @author Judzhin Miles <info[woof-woof]msbios.com>
+ */
+namespace MSBios\CPanel;
+
+/** @var array $page */
+$page = $this->navigation()->findActive(Navigation\Sidebar::class);
+
+/** @var \Zend\Navigation\Page\Mvc $current */
+$current = $page['page'];
+
+/** @var \Zend\Form\Form $form */
+$form = $this->form;
+$form->prepare();
+?>
+
+<div class="panel panel-flat">
+    <div class="panel-heading">
+        <h5 class="panel-title">
+            <?= $current->getLabel(); ?>
+            <a class="heading-elements-toggle"><i class="icon-more"></i></a>
+        </h5>
+
+        <div class="heading-elements">
+            <ul class="icons-list">
+                <li><a data-action="collapse"></a></li>
+                <li><a data-action="reload"></a></li>
+                <li><a data-action="close"></a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="panel-body">
+        <p class="content-group-lg">Examples of standard form controls supported in an example form layout. Individual
+            form controls automatically receive some global styling. All textual <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>,
+            and <code>&lt;select&gt;</code> elements with <code>.form-control</code> are set to <code>width:
+                100%;</code> by default. Wrap labels and controls in <code>.form-group</code> for optimum spacing.
+            Labels in horizontal form require <code>.control-label</code> class.</p>
+
+        <?= $this->form()->openTag($form->setAttributes([
+            'class' => 'form-horizontal',
+            'role' => 'form'
+        ])); ?>
+
+        <?= $this->partial('partial/element.phtml', [
+            'element' => $form->get('title')
+                ->setAttributes([
+                    'required' => 'required',
+                    'placeholder' => $this->translate('Enter layout title')
+                ]),
+            'label' => $this->translate('Title'),
+        ]); ?>
+
+        <?= $this->partial('partial/element.phtml', [
+            'element' => $form->get('template')
+                ->setAttributes([
+                    'required' => 'required',
+                    'placeholder' => $this->translate('Enter layout identifier')
+                ]),
+            'label' => $this->translate('Template')
+        ]); ?>
+
+        <div class="text-right">
+            <button type="reset" class="btn btn-default">Reset</button>
+            <button type="submit" class="btn btn-primary">
+                Submit
+                <i class="icon-arrow-right14 position-right"></i>
+            </button>
+        </div>
+
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>

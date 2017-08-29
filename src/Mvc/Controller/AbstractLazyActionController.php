@@ -22,7 +22,8 @@ use Zend\View\Model\ViewModel;
  * Class AbstractLazyActionController
  * @package MSBios\CPanel\Doctrine\Mvc\Controller
  */
-class AbstractLazyActionController extends DefaultAbstractLazyActionController
+class AbstractLazyActionController extends DefaultAbstractLazyActionController implements
+    EntityManagerAwareInterface
 {
     /** @const EVENT_PERSIST_OBJECT */
     const EVENT_PERSIST_OBJECT = 'persist.object';
@@ -32,6 +33,8 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController
 
     /** @const EVENT_REMOVE_OBJECT */
     const EVENT_REMOVE_OBJECT = 'remove.object';
+
+    use EntityManagerAwareTrait;
 
     /**
      * @return \Zend\Http\Response|ViewModel
@@ -184,7 +187,7 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController
     {
         /** @var Entity\ $object */
         $object = $this->entityManager->find(
-            $this->getRouteName(), $this->params()->fromRoute('id', 0)
+            $this->getResourceClassName(), $this->params()->fromRoute('id', 0)
         );
 
         /** @var int $id */
