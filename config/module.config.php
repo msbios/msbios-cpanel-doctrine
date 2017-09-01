@@ -6,6 +6,8 @@
 
 namespace MSBios\CPanel\Doctrine;
 
+use Zend\ServiceManager\Factory\InvokableFactory;
+
 return [
 
     'router' => [
@@ -68,14 +70,22 @@ return [
     'controllers' => [
 
         'factories' => [
-            Controller\IndexController::class => Factory\LazyActionControllerFactory::class,
-            Controller\LayoutController::class => Factory\LazyActionControllerFactory::class,
-            Controller\ModuleController::class => Factory\LazyActionControllerFactory::class,
-            Controller\PageTypeController::class => Factory\LazyActionControllerFactory::class,
-            Controller\RouteController::class => Factory\LazyActionControllerFactory::class,
-            Controller\SettingController::class => Factory\LazyActionControllerFactory::class,
-            Controller\ThemeController::class => Factory\LazyActionControllerFactory::class,
-        ]
+            Controller\IndexController::class => \MSBios\CPanel\Factory\LazyActionControllerFactory::class,
+            Controller\LayoutController::class => InvokableFactory::class,
+            Controller\ModuleController::class => \MSBios\CPanel\Factory\LazyActionControllerFactory::class,
+            Controller\PageTypeController::class => \MSBios\CPanel\Factory\LazyActionControllerFactory::class,
+            Controller\RouteController::class => \MSBios\CPanel\Factory\LazyActionControllerFactory::class,
+            Controller\SettingController::class => \MSBios\CPanel\Factory\LazyActionControllerFactory::class,
+            Controller\ThemeController::class => \MSBios\CPanel\Factory\LazyActionControllerFactory::class,
+        ],
+        'initializers' => [
+            new Initializer\LazyControllerInitializer
+        ],
+    ],
+
+    'service_manager' => [
+        'abstract_factories' => [],
+        'factories' => [],
     ],
 
     \MSBios\Theme\Module::class => [
@@ -115,33 +125,32 @@ return [
     \MSBios\CPanel\Module::class => [
         'controllers' => [ // key controller
             Controller\LayoutController::class => [
-                'resource' => \MSBios\CPanel\Controller\LayoutController::class,
-                'resource_class' => \MSBios\Resource\Entity\Layout::class,
+                'object_class' => \MSBios\Resource\Entity\Layout::class,
                 'form_element' => \MSBios\Resource\Form\LayoutForm::class,
             ],
             Controller\ModuleController::class => [
                 'resource' => \MSBios\CPanel\Controller\ModuleController::class,
-                'resource_class' => \MSBios\Resource\Entity\Module::class,
+                'object_class' => \MSBios\Resource\Entity\Module::class,
                 // 'form_element' => \MSBios\Resource\Form\ModuleForm::class
             ],
             Controller\PageTypeController::class => [
                 'resource' => \MSBios\CPanel\Controller\PageTypeController::class,
-                'resource_class' => \MSBios\Resource\Entity\PageType::class,
+                'object_class' => \MSBios\Resource\Entity\PageType::class,
                 // 'form_element' => \MSBios\Resource\Form\UserForm::class
             ],
             Controller\RouteController::class => [
                 'resource' => \MSBios\CPanel\Controller\RouteController::class,
-                'resource_class' => \MSBios\Resource\Entity\PageType::class,
+                'object_class' => \MSBios\Resource\Entity\PageType::class,
                 // 'form_element' => \MSBios\Resource\Form\UserForm::class
             ],
             Controller\SettingController::class => [
                 'resource' => \MSBios\CPanel\Controller\SettingController::class,
-                'resource_class' => \MSBios\Resource\Entity\Setting::class,
+                'object_class' => \MSBios\Resource\Entity\Setting::class,
                 // 'form_element' => \MSBios\Resource\Form\UserForm::class
             ],
             Controller\ThemeController::class => [
                 'resource' => \MSBios\CPanel\Controller\ThemeController::class,
-                'resource_class' => \MSBios\Resource\Entity\Theme::class,
+                'object_class' => \MSBios\Resource\Entity\Theme::class,
                 // 'form_element' => \MSBios\Resource\Form\ThemeForm::class
             ]
         ]

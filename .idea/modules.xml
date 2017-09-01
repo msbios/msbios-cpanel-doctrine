@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../msbios-cpanel/.idea/msbios-cpanel.iml" filepath="$PROJECT_DIR$/../msbios-cpanel/.idea/msbios-cpanel.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/msbios-cpanel-doctrine.iml" filepath="$PROJECT_DIR$/.idea/msbios-cpanel-doctrine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../msbios-guard-resource/.idea/msbios-guard-resource.iml" filepath="$PROJECT_DIR$/../msbios-guard-resource/.idea/msbios-guard-resource.iml" />
     </modules>
   </component>
 </project>

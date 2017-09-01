@@ -6,24 +6,27 @@
 
 namespace MSBios\CPanel\Doctrine\Mvc\Controller;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
+use MSBios\CPanel\Doctrine\Initializer;
 use MSBios\CPanel\Mvc\Controller\AbstractLazyActionController as DefaultAbstractLazyActionController;
 use MSBios\Resource\Entity;
+use Zend\Config\Config;
 use Zend\Form\FormInterface;
-use Zend\Http\PhpEnvironment\Request;
 use Zend\Paginator\Paginator;
 use Zend\Stdlib\Parameters;
+use Zend\Stdlib\RequestInterface;
 use Zend\View\Model\ViewModel;
 
 /**
  * Class AbstractLazyActionController
  * @package MSBios\CPanel\Doctrine\Mvc\Controller
  */
-class AbstractLazyActionController extends DefaultAbstractLazyActionController implements
-    EntityManagerAwareInterface
+abstract class AbstractLazyActionController extends DefaultAbstractLazyActionController implements
+    Initializer\DoctrineHydratorAwareInterface,
+    Initializer\EntityManagerAwareInterface
 {
     /** @const EVENT_PERSIST_OBJECT */
     const EVENT_PERSIST_OBJECT = 'persist.object';
@@ -34,16 +37,17 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController i
     /** @const EVENT_REMOVE_OBJECT */
     const EVENT_REMOVE_OBJECT = 'remove.object';
 
-    use EntityManagerAwareTrait;
+    use Initializer\DoctrineHydratorAwareTrait;
+    use Initializer\EntityManagerAwareTrait;
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return ViewModel
      */
     public function indexAction()
     {
-        /** @var EntityRepository $entityRepository */
+        /** @var ObjectRepository $entityRepository */
         $entityRepository = $this->getEntityManager()->getRepository(
-            $this->getResourceClassName()
+            get_class($this->getObjectPrototype())
         );
 
         /** @var QueryBuilder $queryBuilder */
@@ -64,7 +68,12 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController i
 
         return new ViewModel([
             'paginator' => $paginator,
-            'config' => $this->getOptions()
+            'config' => new Config([
+                'resource' => $this->getResourceId(),
+                'route_name' => $this->getEvent()
+                    ->getRouteMatch()
+                    ->getMatchedRouteName()
+            ])
         ]);
     }
 
@@ -73,17 +82,22 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController i
      */
     public function addAction()
     {
+        /** @var string $matchedRouteName */
+        $matchedRouteName = $this->getEvent()
+            ->getRouteMatch()
+            ->getMatchedRouteName();
+
         /** @var int $id */
         if ($id = $this->params()->fromRoute('id')) {
             return $this->redirect()->toRoute(
-                $this->getRouteName(), ['action' => 'add']
+                $matchedRouteName, ['action' => 'add']
             );
         }
 
         /** @var FormInterface $form */
-        $form = $this->getFormElement();
+        $form = $this->getForm();
 
-        /** @var Request $request */
+        /** @var RequestInterface $request */
         $request = $this->getRequest();
 
         if ($request->isPost()) {
@@ -94,8 +108,18 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController i
 
             if ($form->isValid()) {
 
-                /** @var Entity $entity */
-                $entity = $form->getObject();
+                ///** @var array $data */
+                //$data = $form->getData();
+
+                ///** @var Entity $entity */
+                //$entity = $this->getHydrator()
+                //    ->hydrate($data, clone $this->getObjectPrototype());
+
+                $entity = $form->getData();
+
+                // TODO: need move to listener
+                $entity->setCreator($this->identity());
+                $entity->setEditor($entity->getCreator());
 
                 // fire event
                 $this->getEventManager()->trigger(
@@ -108,15 +132,27 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController i
                 $this->flashMessenger()
                     ->addSuccessMessage('Entity has been create');
 
-                return $this->redirect()->toRoute($this->getRouteName());
+                return $this->redirect()->toRoute($matchedRouteName);
+            } else {
+                $this->getEventManager()->trigger(
+                    self::EVENT_VALIDATE_ERROR, $this, [
+                        'messages' => $form->getMessages()
+                    ]
+                );
             }
         }
 
         $form->setAttribute(
-            'action', $this->url()->fromRoute($this->getRouteName(), ['action' => 'add'])
+            'action', $this->url()->fromRoute($matchedRouteName, ['action' => 'add'])
         );
 
-        return new ViewModel(['form' => $form]);
+        return new ViewModel([
+            'form' => $form,
+            'config' => new Config([
+                'resource' => $this->getResourceId(),
+                'route_name' => $matchedRouteName
+            ])
+        ]);
     }
 
     /**
@@ -129,30 +165,52 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController i
 
         /** @var Object $object */
         $object = $this->getEntityManager()->find(
-            $this->getResourceClassName(), $id
+            get_class($this->getObjectPrototype()), $id
         );
+
+        /** @var string $matchedRouteName */
+        $matchedRouteName = $this->getEvent()
+            ->getRouteMatch()
+            ->getMatchedRouteName();
 
         if (!$object) {
             return $this->redirect()->toRoute(
-                $this->getRouteName()
+                $matchedRouteName
             );
         }
 
-        /** @var FormInterface $form */
-        $form = $this->getFormElement()->bind(clone $object);
+        // r($this->getForm()->getHydrator()); die();
 
-        /** @var Request $request */
+        /** @var FormInterface $form */
+        $form = $this->getForm()->bind($object);
+
+        // $form = $this->getForm()->setData(
+        //     $this->getHydrator()->extract($object)
+        // );
+
+        /** @var RequestInterface $request */
         $request = $this->getRequest();
 
         if ($request->isPost()) {
 
-            /** @var array $parameters */
+            /** @var Parameters $parameters */
             $parameters = $request->getPost();
             $form->setData($parameters);
+
             if ($form->isValid()) {
 
+                // /** @var array $data */
+                // $data = $form->getData();
+
+                // r($data); die();
+
                 /** @var Entity $entity */
-                $entity = $form->getObject();
+                $entity = $form->getData();
+                //$entity = $this->getHydrator()
+                //    ->hydrate($data, $object);
+
+                // TODO: need move to listener
+                $entity->setEditor($this->identity());
 
                 // fire event
                 $this->getEventManager()->trigger(
@@ -166,17 +224,31 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController i
                 $this->flashMessenger()
                     ->addSuccessMessage('Entity has been update');
 
-                return $this->redirect()
-                    ->toRoute($this->getOptions()->get('route_name'));
+                return $this->redirect()->toRoute(
+                    $matchedRouteName
+                );
+            } else {
+                $this->getEventManager()->trigger(
+                    self::EVENT_VALIDATE_ERROR, $this, [
+                        'object' => $object,
+                        'messages' => $form->getMessages()
+                    ]
+                );
+
             }
         }
 
         $form->setAttribute(
-            'action', $this->url()->fromRoute($this->getRouteName(), ['action' => 'edit', 'id' => $id])
+            'action', $this->url()->fromRoute($matchedRouteName, ['action' => 'edit', 'id' => $id])
         );
 
         return new ViewModel([
-            'object' => $object, 'form' => $form
+            'object' => $object,
+            'form' => $form,
+            'config' => new Config([
+                'resource' => $this->getResourceId(),
+                'route_name' => $matchedRouteName
+            ])
         ]);
     }
 
@@ -185,13 +257,15 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController i
      */
     public function dropAction()
     {
-        /** @var Entity\ $object */
+        /** @var Entity $object */
         $object = $this->entityManager->find(
-            $this->getResourceClassName(), $this->params()->fromRoute('id', 0)
+            get_class($this->getObjectPrototype()),
+            $this->params()->fromRoute('id', 0)
         );
 
         /** @var int $id */
         if ($object) {
+
             // fire event
             $this->getEventManager()->trigger(
                 self::EVENT_REMOVE_OBJECT, $this, ['object' => $object]
@@ -204,6 +278,8 @@ class AbstractLazyActionController extends DefaultAbstractLazyActionController i
                 ->addSuccessMessage('Entity has been removed');
         }
 
-        return $this->redirect()->toRoute($this->getRouteName());
+        return $this->redirect()->toRoute(
+            $this->getEvent()->getRouteMatch()->getMatchedRouteName()
+        );
     }
 }

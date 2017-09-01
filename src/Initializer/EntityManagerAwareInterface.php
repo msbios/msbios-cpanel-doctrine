@@ -4,13 +4,13 @@
  * @author Judzhin Miles <info[woof-woof]msbios.com>
  */
 
-namespace MSBios\CPanel\Doctrine\Mvc\Controller;
+namespace MSBios\CPanel\Doctrine\Initializer;
 
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Interface EntityManagerAwareInterface
- * @package MSBios\CPanel\Doctrine\Mvc\Controller
+ * @package MSBios\CPanel\Doctrine\Initializer
  */
 interface EntityManagerAwareInterface
 {
