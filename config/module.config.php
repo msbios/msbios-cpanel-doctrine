@@ -70,7 +70,7 @@ return [
     'controllers' => [
 
         'factories' => [
-            Controller\IndexController::class => \MSBios\CPanel\Factory\LazyActionControllerFactory::class,
+            Controller\IndexController::class => InvokableFactory::class,
             Controller\LayoutController::class => InvokableFactory::class,
             Controller\ModuleController::class => \MSBios\CPanel\Factory\LazyActionControllerFactory::class,
             Controller\PageTypeController::class => \MSBios\CPanel\Factory\LazyActionControllerFactory::class,
@@ -125,8 +125,9 @@ return [
     \MSBios\CPanel\Module::class => [
         'controllers' => [ // key controller
             Controller\LayoutController::class => [
-                'object_class' => \MSBios\Resource\Entity\Layout::class,
+                'object_class' => \MSBios\Resource\Doctrine\Entity\Layout::class,
                 'form_element' => \MSBios\Resource\Form\LayoutForm::class,
+                'item_count_per_page' => 10
             ],
             Controller\ModuleController::class => [
                 'resource' => \MSBios\CPanel\Controller\ModuleController::class,

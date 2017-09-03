@@ -28,6 +28,7 @@ return [
         'MSBios\Navigation',
         'MSBios\Application',
         'MSBios\Resource',
+        'MSBios\Resource\Doctrine',
         'MSBios\Authentication',
         'MSBios\Guard',
         'MSBios\CPanel',

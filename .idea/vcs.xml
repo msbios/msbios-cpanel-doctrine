@@ -3,5 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../msbios-cpanel" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../msbios-resource" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../msbios-resource-doctrine" vcs="Git" />
   </component>
 </project>

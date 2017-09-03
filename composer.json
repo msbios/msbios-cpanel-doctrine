@@ -27,9 +27,9 @@
     "zendframework/zend-loader": "^2.5",
     "zendframework/zend-servicemanager": "^3.3",
     "zendframework/zend-modulemanager": "^2.8",
+    "zendframework/zend-mvc-plugins": "^1.0",
     "zendframework/zend-mvc-plugin-flashmessenger": "^1.0",
-    "msbios/msbios": "^0.0.1",
-    "zendframework/zend-mvc-plugins": "^1.0"
+    "msbios/msbios": "^0.0.1"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.7",
@@ -41,6 +41,7 @@
     "msbios/guard": "dev-master",
     "msbios/guard-cpanel": "dev-master",
     "msbios/resource": "dev-master",
+    "msbios/resource-doctrine": "dev-master",
     "msbios/cpanel": "dev-master",
     "msbios/debug": "dev-master"
   },
@@ -63,6 +64,9 @@
     }, {
       "type": "path",
       "url": "../msbios-resource/"
+    }, {
+      "type": "path",
+      "url": "../msbios-resource-doctrine/"
     }, {
       "type": "path",
       "url": "../msbios-cpanel/"

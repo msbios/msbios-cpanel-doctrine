@@ -58,7 +58,9 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
             new DoctrineAdapter(
                 new ORMPaginator($queryBuilder)
             )
-        ))->setItemCountPerPage($this->getOptions()->get('item_count_per_page'));
+        ))->setItemCountPerPage(
+            $this->getOptions()->get('item_count_per_page', self::DEFAULT_ITEM_COUNT_PER_PAGE)
+        );
 
         /** @var int $page */
         $page = (int)$this->params()->fromQuery('page');
