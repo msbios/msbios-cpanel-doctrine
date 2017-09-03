@@ -7,7 +7,7 @@ namespace MSBios\CPanel\Doctrine\Controller;
 
 use MSBios\CPanel\Controller\LayoutController as DefaultLayoutController;
 use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
-use MSBios\Resource\Entity\Layout;
+use MSBios\Resource\Doctrine\Entity\Layout;
 
 /**
  * Class LayoutController
@@ -16,6 +16,14 @@ use MSBios\Resource\Entity\Layout;
 class LayoutController extends AbstractLazyActionController
 {
     /**
+     * LayoutController constructor.
+     */
+    public function __construct()
+    {
+        $this->setObjectPrototype(new Layout);
+    }
+
+    /**
      * @return string
      */
     public function getResourceId()
@@ -23,11 +31,11 @@ class LayoutController extends AbstractLazyActionController
         return DefaultLayoutController::class;
     }
 
-    /**
-     * @return string
-     */
-    protected function entityClassName()
-    {
-        return Layout::class;
-    }
+//    /**
+//     * @return string
+//     */
+//    protected function entityClassName()
+//    {
+//        return Layout::class;
+//    }
 }

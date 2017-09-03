@@ -104,18 +104,13 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
 
         if ($request->isPost()) {
 
+            $form->setObject($this->getObjectPrototype());
+
             /** @var Parameters $parameters */
             $parameters = $request->getPost();
             $form->setData($parameters);
 
             if ($form->isValid()) {
-
-                ///** @var array $data */
-                //$data = $form->getData();
-
-                ///** @var Entity $entity */
-                //$entity = $this->getHydrator()
-                //    ->hydrate($data, clone $this->getObjectPrototype());
 
                 $entity = $form->getData();
 
@@ -181,14 +176,8 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
             );
         }
 
-        // r($this->getForm()->getHydrator()); die();
-
         /** @var FormInterface $form */
         $form = $this->getForm()->bind($object);
-
-        // $form = $this->getForm()->setData(
-        //     $this->getHydrator()->extract($object)
-        // );
 
         /** @var RequestInterface $request */
         $request = $this->getRequest();
@@ -201,15 +190,8 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
 
             if ($form->isValid()) {
 
-                // /** @var array $data */
-                // $data = $form->getData();
-
-                // r($data); die();
-
                 /** @var Entity $entity */
                 $entity = $form->getData();
-                //$entity = $this->getHydrator()
-                //    ->hydrate($data, $object);
 
                 // TODO: need move to listener
                 $entity->setEditor($this->identity());
@@ -236,7 +218,6 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
                         'messages' => $form->getMessages()
                     ]
                 );
-
             }
         }
 
