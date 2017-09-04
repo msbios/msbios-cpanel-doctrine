@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../msbios-authentication/.idea/msbios-authentication.iml" filepath="$PROJECT_DIR$/../msbios-authentication/.idea/msbios-authentication.iml" />
       <module fileurl="file://$PROJECT_DIR$/../msbios-cpanel/.idea/msbios-cpanel.iml" filepath="$PROJECT_DIR$/../msbios-cpanel/.idea/msbios-cpanel.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/msbios-cpanel-doctrine.iml" filepath="$PROJECT_DIR$/.idea/msbios-cpanel-doctrine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../msbios-doctrine/.idea/msbios-doctrine.iml" filepath="$PROJECT_DIR$/../msbios-doctrine/.idea/msbios-doctrine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../msbios-guard-cpanel/.idea/msbios-guard-cpanel.iml" filepath="$PROJECT_DIR$/../msbios-guard-cpanel/.idea/msbios-guard-cpanel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../msbios-guard-cpanel-doctrine/.idea/msbios-guard-cpanel-doctrine.iml" filepath="$PROJECT_DIR$/../msbios-guard-cpanel-doctrine/.idea/msbios-guard-cpanel-doctrine.iml" />
       <module fileurl="file://$PROJECT_DIR$/../msbios-guard-resource/.idea/msbios-guard-resource.iml" filepath="$PROJECT_DIR$/../msbios-guard-resource/.idea/msbios-guard-resource.iml" />
       <module fileurl="file://$PROJECT_DIR$/../msbios-resource/.idea/msbios-resource.iml" filepath="$PROJECT_DIR$/../msbios-resource/.idea/msbios-resource.iml" />
       <module fileurl="file://$PROJECT_DIR$/../msbios-resource-doctrine/.idea/msbios-resource-doctrine.iml" filepath="$PROJECT_DIR$/../msbios-resource-doctrine/.idea/msbios-resource-doctrine.iml" />

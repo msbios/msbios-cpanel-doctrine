@@ -28,5 +28,9 @@
     <orderEntry type="module" module-name="msbios-cpanel" />
     <orderEntry type="module" module-name="msbios-resource-doctrine" />
     <orderEntry type="module" module-name="msbios-resource" />
+    <orderEntry type="module" module-name="msbios-doctrine" />
+    <orderEntry type="module" module-name="msbios-guard-cpanel" />
+    <orderEntry type="module" module-name="msbios-guard-cpanel-doctrine" />
+    <orderEntry type="module" module-name="msbios-authentication" />
   </component>
 </module>

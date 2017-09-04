@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cdaf5b95205c940a322c952ff9db6931",
+    "content-hash": "39280f34b0872a5fd5b4455130403014",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -2776,6 +2776,84 @@
             ]
         },
         {
+            "name": "msbios/doctrine",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../msbios-doctrine",
+                "reference": "b67f9abb42075b313393a6e0507a40296da20f0f",
+                "shasum": null
+            },
+            "require": {
+                "doctrine/doctrine-orm-module": "^1.1",
+                "msbios/msbios": "^0.0.1",
+                "zendframework/zend-loader": "^2.5",
+                "zendframework/zend-modulemanager": "^2.8",
+                "zendframework/zend-router": "^3.0",
+                "zendframework/zend-servicemanager": "^3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7",
+                "squizlabs/php_codesniffer": "^3.0",
+                "zendframework/zend-test": "^3.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MSBios\\Doctrine\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "MSBiosTest\\Doctrine\\": "tests/"
+                }
+            },
+            "scripts": {
+                "cs-check": [
+                    "phpcs"
+                ],
+                "cs-fix": [
+                    "phpcbf"
+                ],
+                "test": [
+                    "@cs-check",
+                    "phpunit"
+                ],
+                "cleanup": [
+                    "rm ./data/cache/*.php && rm ./data/logs/*.log"
+                ],
+                "doctrine": [
+                    "./vendor/bin/doctrine-module"
+                ],
+                "alter": [
+                    "./vendor/bin/doctrine-module orm:schema-tool:update --force"
+                ],
+                "convert-mapping": [
+                    "./vendor/bin/doctrine-module orm:convert-mapping --namespace=\"MSBios\\Resource\\\" --force --from-database yml src/Yml/"
+                ],
+                "generate-entities": [
+                    "./vendor/bin/doctrine-module orm:generate-entities src/ --generate-annotations=true"
+                ],
+                "commit": [
+                    "git add . && git commit -a -m \"Lazy Composer Commiter\" && git push"
+                ]
+            },
+            "license": [
+                "GPL"
+            ],
+            "authors": [
+                {
+                    "name": "Judzhin Miles",
+                    "email": "info@msbios.com"
+                }
+            ],
+            "description": "MSBios Doctrine",
+            "homepage": "https://github.com/msbios/msbios-doctrine",
+            "keywords": [
+                "php"
+            ]
+        },
+        {
             "name": "msbios/guard",
             "version": "dev-master",
             "dist": {
@@ -2913,6 +2991,74 @@
             ],
             "description": "MSBios Guard CPanel",
             "homepage": "https://github.com/msbios/msbios-guard-cpanel",
+            "keywords": [
+                "php"
+            ]
+        },
+        {
+            "name": "msbios/guard-cpanel-doctrine",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../msbios-guard-cpanel-doctrine",
+                "reference": "b3ee05aedf14bf5074abf920c6a67c87bbdc1df3",
+                "shasum": null
+            },
+            "require": {
+                "msbios/msbios": "^0.0.1",
+                "zendframework/zend-loader": "^2.5",
+                "zendframework/zend-modulemanager": "^2.8",
+                "zendframework/zend-mvc-plugin-flashmessenger": "^1.0",
+                "zendframework/zend-servicemanager": "^3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7",
+                "squizlabs/php_codesniffer": "^3.0",
+                "zendframework/zend-test": "^3.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MSBios\\Guard\\CPanel\\Doctrine\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "MSBiosTest\\Guard\\CPanel\\Doctrine\\": "tests/"
+                }
+            },
+            "scripts": {
+                "cs-check": [
+                    "phpcs"
+                ],
+                "cs-fix": [
+                    "phpcbf"
+                ],
+                "test": [
+                    "@cs-check",
+                    "phpunit"
+                ],
+                "alter": [
+                    "./vendor/bin/doctrine-module orm:schema-tool:update --force"
+                ],
+                "serve": [
+                    "php -S 0.0.0.0:3107 -t bin bin/msbios-guard-cpanel-module.php"
+                ],
+                "commit": [
+                    "git add . && git commit -a -m \"Lazy Composer Commiter\" && git push"
+                ]
+            },
+            "license": [
+                "GPL"
+            ],
+            "authors": [
+                {
+                    "name": "Judzhin Miles",
+                    "email": "info@msbios.com"
+                }
+            ],
+            "description": "MSBios Guard CPanel",
+            "homepage": "https://github.com/msbios/msbios-guard-cpanel-doctrine",
             "keywords": [
                 "php"
             ]
@@ -3682,22 +3828,22 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "v1.7.0",
+            "version": "v1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "93d39f1f7f9326d746203c7c056f300f7f126073"
+                "reference": "15ea9ac619e37009edcda64089e3fa4cc88aa659"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/93d39f1f7f9326d746203c7c056f300f7f126073",
-                "reference": "93d39f1f7f9326d746203c7c056f300f7f126073",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/15ea9ac619e37009edcda64089e3fa4cc88aa659",
+                "reference": "15ea9ac619e37009edcda64089e3fa4cc88aa659",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.0.2",
                 "php": "^5.3|^7.0",
-                "phpdocumentor/reflection-docblock": "^2.0|^3.0.2",
+                "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0",
                 "sebastian/comparator": "^1.1|^2.0",
                 "sebastian/recursion-context": "^1.0|^2.0|^3.0"
             },
@@ -3708,7 +3854,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6.x-dev"
+                    "dev-master": "1.7.x-dev"
                 }
             },
             "autoload": {
@@ -3741,7 +3887,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2017-03-02T20:05:34+00:00"
+            "time": "2017-09-03T09:38:53+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -6023,10 +6169,12 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "msbios/application": 20,
+        "msbios/doctrine": 20,
         "msbios/authentication": 20,
         "msbios/guard-resource": 20,
         "msbios/guard": 20,
         "msbios/guard-cpanel": 20,
+        "msbios/guard-cpanel-doctrine": 20,
         "msbios/resource": 20,
         "msbios/resource-doctrine": 20,
         "msbios/cpanel": 20,

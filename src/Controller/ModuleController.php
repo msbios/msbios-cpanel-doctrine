@@ -5,7 +5,9 @@
  */
 namespace MSBios\CPanel\Doctrine\Controller;
 
+use MSBios\CPanel\Controller\ModuleController as DefaultModuleController;
 use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
+use MSBios\Resource\Doctrine\Entity\Module;
 
 /**
  * Class ModuleController
@@ -14,10 +16,18 @@ use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
 class ModuleController extends AbstractLazyActionController
 {
     /**
+     * ModuleController constructor.
+     */
+    public function __construct()
+    {
+        $this->setObjectPrototype(new Module);
+    }
+
+    /**
      * @return string
      */
     public function getResourceId()
     {
-        return \MSBios\CPanel\Controller\ModuleController::class;
+        return DefaultModuleController::class;
     }
 }

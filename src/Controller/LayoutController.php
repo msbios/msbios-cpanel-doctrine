@@ -30,12 +30,4 @@ class LayoutController extends AbstractLazyActionController
     {
         return DefaultLayoutController::class;
     }
-
-//    /**
-//     * @return string
-//     */
-//    protected function entityClassName()
-//    {
-//        return Layout::class;
-//    }
 }

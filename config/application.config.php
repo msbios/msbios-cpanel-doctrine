@@ -34,6 +34,7 @@ return [
         'MSBios\CPanel',
         'MSBios\CPanel\Doctrine',
         'MSBios\Guard\CPanel',
+        'MSBios\Guard\CPanel\Doctrine',
         'MSBios\Guard\Resource',
 
         'Zend\Log',

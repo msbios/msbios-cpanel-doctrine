@@ -36,10 +36,12 @@
     "zendframework/zend-test": "^3.1",
     "squizlabs/php_codesniffer": "^3.0",
     "msbios/application": "dev-master",
+    "msbios/doctrine": "dev-master",
     "msbios/authentication": "dev-master",
     "msbios/guard-resource": "dev-master",
     "msbios/guard": "dev-master",
     "msbios/guard-cpanel": "dev-master",
+    "msbios/guard-cpanel-doctrine": "dev-master",
     "msbios/resource": "dev-master",
     "msbios/resource-doctrine": "dev-master",
     "msbios/cpanel": "dev-master",
@@ -49,6 +51,9 @@
     {
       "type": "path",
       "url": "../msbios-application/"
+    }, {
+      "type": "path",
+      "url": "../msbios-doctrine/"
     }, {
       "type": "path",
       "url": "../msbios-authentication/"
@@ -61,6 +66,9 @@
     }, {
       "type": "path",
       "url": "../msbios-guard-cpanel/"
+    }, {
+      "type": "path",
+      "url": "../msbios-guard-cpanel-doctrine/"
     }, {
       "type": "path",
       "url": "../msbios-resource/"

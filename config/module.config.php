@@ -85,7 +85,11 @@ return [
     'form_elements' => [
         'aliases' => [
             Controller\LayoutController::class =>
-                \MSBios\Resource\Form\LayoutForm::class
+                \MSBios\Resource\Form\LayoutForm::class,
+            Controller\ModuleController::class =>
+                \MSBios\Resource\Form\ModuleForm::class,
+            Controller\PageTypeController::class =>
+                \MSBios\Resource\Form\ModuleForm::class,
         ],
     ],
 
@@ -126,40 +130,5 @@ return [
                 ],
             ],
         ]
-    ],
-
-    \MSBios\CPanel\Module::class => [
-        'controllers' => [ // key controller
-            Controller\LayoutController::class => [
-                // 'object_class' => \MSBios\Resource\Doctrine\Entity\Layout::class,
-                'form_element' => \MSBios\Resource\Form\LayoutForm::class,
-                'item_count_per_page' => 10
-            ],
-            Controller\ModuleController::class => [
-                // 'resource' => \MSBios\CPanel\Controller\ModuleController::class,
-                // 'object_class' => \MSBios\Resource\Entity\Module::class,
-                // 'form_element' => \MSBios\Resource\Form\ModuleForm::class
-            ],
-            Controller\PageTypeController::class => [
-                // 'resource' => \MSBios\CPanel\Controller\PageTypeController::class,
-                // 'object_class' => \MSBios\Resource\Entity\PageType::class,
-                // 'form_element' => \MSBios\Resource\Form\UserForm::class
-            ],
-            Controller\RouteController::class => [
-                // 'resource' => \MSBios\CPanel\Controller\RouteController::class,
-                // 'object_class' => \MSBios\Resource\Entity\PageType::class,
-                // 'form_element' => \MSBios\Resource\Form\UserForm::class
-            ],
-            Controller\SettingController::class => [
-                // 'resource' => \MSBios\CPanel\Controller\SettingController::class,
-                // 'object_class' => \MSBios\Resource\Entity\Setting::class,
-                // 'form_element' => \MSBios\Resource\Form\UserForm::class
-            ],
-            Controller\ThemeController::class => [
-                // 'resource' => \MSBios\CPanel\Controller\ThemeController::class,
-                // 'object_class' => \MSBios\Resource\Entity\Theme::class,
-                // 'form_element' => \MSBios\Resource\Form\ThemeForm::class
-            ],
-        ],
-    ],
+    ]
 ];
