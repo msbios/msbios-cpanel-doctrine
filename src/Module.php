@@ -6,7 +6,6 @@
 
 namespace MSBios\CPanel\Doctrine;
 
-
 use MSBios\ModuleInterface;
 
 /**

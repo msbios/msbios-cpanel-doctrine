@@ -27,10 +27,11 @@
     "zendframework/zend-loader": "^2.5",
     "zendframework/zend-servicemanager": "^3.3",
     "zendframework/zend-modulemanager": "^2.8",
+    "msbios/cpanel": "~1.0",
     "msbios/resource-doctrine": "~1.0",
     "msbios/authentication-doctrine": "~1.0",
     "msbios/guard-resource-doctrine": "~1.0",
-    "msbios/guard-cpanel-doctrine": "^1.0"
+    "msbios/guard-cpanel-doctrine": "~1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.7",

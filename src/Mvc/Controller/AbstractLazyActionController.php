@@ -90,7 +90,8 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
         /** @var int $id */
         if ($id = $this->params()->fromRoute('id')) {
             return $this->redirect()->toRoute(
-                $matchedRouteName, ['action' => 'add']
+                $matchedRouteName,
+                ['action' => 'add']
             );
         }
 
@@ -101,7 +102,6 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
         $request = $this->getRequest();
 
         if ($request->isPost()) {
-
             $form->setObject($this->getObjectPrototype());
 
             /** @var Parameters $parameters */
@@ -109,7 +109,6 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
             $form->setData($parameters);
 
             if ($form->isValid()) {
-
                 $entity = $form->getData();
 
                 // TODO: need move to listener
@@ -118,7 +117,9 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
 
                 // fire event
                 $this->getEventManager()->trigger(
-                    self::EVENT_PERSIST_OBJECT, $this, ['entity' => $entity, 'data' => $parameters]
+                    self::EVENT_PERSIST_OBJECT,
+                    $this,
+                    ['entity' => $entity, 'data' => $parameters]
                 );
 
                 $this->getEntityManager()->persist($entity);
@@ -130,7 +131,9 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
                 return $this->redirect()->toRoute($matchedRouteName);
             } else {
                 $this->getEventManager()->trigger(
-                    self::EVENT_VALIDATE_ERROR, $this, [
+                    self::EVENT_VALIDATE_ERROR,
+                    $this,
+                    [
                         'messages' => $form->getMessages()
                     ]
                 );
@@ -138,7 +141,8 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
         }
 
         $form->setAttribute(
-            'action', $this->url()->fromRoute($matchedRouteName, ['action' => 'add'])
+            'action',
+            $this->url()->fromRoute($matchedRouteName, ['action' => 'add'])
         );
 
         return new ViewModel([
@@ -160,7 +164,8 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
 
         /** @var Object $object */
         $object = $this->getEntityManager()->find(
-            get_class($this->getObjectPrototype()), $id
+            get_class($this->getObjectPrototype()),
+            $id
         );
 
         /** @var string $matchedRouteName */
@@ -168,7 +173,7 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
             ->getRouteMatch()
             ->getMatchedRouteName();
 
-        if (!$object) {
+        if (! $object) {
             return $this->redirect()->toRoute(
                 $matchedRouteName
             );
@@ -197,7 +202,8 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
                 // fire event
                 $this->getEventManager()->trigger(
                     self::EVENT_MERGE_OBJECT,
-                    $this, ['object' => $object, 'entity' => $entity, 'data' => $parameters]
+                    $this,
+                    ['object' => $object, 'entity' => $entity, 'data' => $parameters]
                 );
 
                 $this->getEntityManager()->merge($entity);
@@ -211,7 +217,9 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
                 );
             } else {
                 $this->getEventManager()->trigger(
-                    self::EVENT_VALIDATE_ERROR, $this, [
+                    self::EVENT_VALIDATE_ERROR,
+                    $this,
+                    [
                         'object' => $object,
                         'messages' => $form->getMessages()
                     ]
@@ -220,7 +228,8 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
         }
 
         $form->setAttribute(
-            'action', $this->url()->fromRoute($matchedRouteName, ['action' => 'edit', 'id' => $id])
+            'action',
+            $this->url()->fromRoute($matchedRouteName, ['action' => 'edit', 'id' => $id])
         );
 
         return new ViewModel([
@@ -246,10 +255,11 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
 
         /** @var int $id */
         if ($object) {
-
             // fire event
             $this->getEventManager()->trigger(
-                self::EVENT_REMOVE_OBJECT, $this, ['object' => $object]
+                self::EVENT_REMOVE_OBJECT,
+                $this,
+                ['object' => $object]
             );
 
             $this->getEntityManager()->remove($object);
