@@ -6,7 +6,6 @@
 
 namespace MSBios\CPanel\Doctrine\Mvc\Controller;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
@@ -16,10 +15,8 @@ use MSBios\CPanel\Mvc\Controller\AbstractLazyActionController as DefaultAbstract
 use MSBios\Guard\Resource\Doctrine\BlameableAwareInterface;
 use MSBios\Resource\Doctrine\EntityInterface;
 use MSBios\Resource\Doctrine\TimestampableAwareInterface;
-use MSBios\Resource\Entity;
 use Zend\Config\Config;
 use Zend\Form\FormInterface;
-use Zend\Hydrator\HydratorInterface;
 use Zend\Paginator\Paginator;
 use Zend\Stdlib\Parameters;
 use Zend\Stdlib\RequestInterface;
@@ -122,7 +119,8 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
                 /** @var EntityInterface $entity */
                 $entity = $form->getData();
 
-                if (!$entity instanceof EntityInterface) {
+                if (! $entity instanceof EntityInterface) {
+                    /** @var EntityInterface $entity */
                     $entity = (new DoctrineObject($this->getEntityManager()))->hydrate(
                         $entity,
                         $this->getObjectPrototype()
@@ -203,7 +201,7 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
             ->getRouteMatch()
             ->getMatchedRouteName();
 
-        if (!$object) {
+        if (! $object) {
             return $this->redirect()->toRoute(
                 $matchedRouteName
             );
@@ -212,7 +210,7 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
         /** @var FormInterface $form */
         $form = $this->getForm();
 
-        if (!$form->getHydrator() instanceof HydratorInterface) {
+        if (! $form->getHydrator() instanceof DoctrineObject) {
             $form->setData(
                 (new DoctrineObject($this->getEntityManager()))->extract($object)
             );
@@ -234,7 +232,9 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
                 /** @var EntityInterface $entity */
                 $entity = $form->getData();
 
-                if (!$entity instanceof EntityInterface) {
+                if (! $entity instanceof EntityInterface) {
+
+                    /** @var EntityInterface $entity */
                     $entity = (new DoctrineObject($this->getEntityManager()))->hydrate(
                         $entity,
                         $object
@@ -302,7 +302,7 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
      */
     public function dropAction()
     {
-        /** @var Entity $object */
+        /** @var EntityInterface $object */
         $object = $this->entityManager->find(
             get_class($this->getObjectPrototype()),
             $this->params()->fromRoute('id', 0)
