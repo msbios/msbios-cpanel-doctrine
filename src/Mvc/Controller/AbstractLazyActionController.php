@@ -49,7 +49,7 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
      * @param string $alias
      * @return QueryBuilder
      */
-    public function getQueryBuilder($alias = 'resource')
+    protected function getQueryBuilder($alias = 'resource')
     {
         /** @var QueryBuilder $queryBuilder */
         return $this->getEntityManager()->getRepository(
