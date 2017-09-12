@@ -4,7 +4,9 @@
  * @author Judzhin Miles <info[woof-woof]msbios.com>
  */
 
-namespace MSBios\CPanel;
+namespace MSBios\CPanel\Doctrine;
+
+use MSBios\Resource\Doctrine\Entity\Layout;
 
 $this->headScript()
     ->appendFile($this->basePath('limitless/assets/js/plugins/forms/styling/switch.min.js'))
@@ -73,6 +75,8 @@ $this->headScript()
                         <tr>
                             <th><?= $this->translate('Title'); ?></th>
                             <th><?= $this->translate('Template'); ?></th>
+                            <th><?= $this->translate('Created At'); ?></th>
+                            <th><?= $this->translate('Modified At'); ?></th>
                             <th width="1px" class="text-center">
                                 <?= $this->translate('Actions'); ?>
                             </th>
@@ -80,11 +84,25 @@ $this->headScript()
                         </thead>
 
                         <tbody>
-                        <?php /** @var \MSBios\Resource\Entity\Layout $item */ ?>
+                        <?php /** @var Layout $item */ ?>
                         <?php foreach ($this->paginator as $item): ?>
                             <tr>
                                 <td><?= $this->escapeHtml($item->getTitle()); ?></td>
                                 <td><?= $this->escapeHtml($item->getTemplate()); ?></td>
+                                <td>
+                                    <?= $this->dateFormat(
+                                        $item->getCreatedAt(),
+                                        \IntlDateFormatter::MEDIUM,
+                                        \IntlDateFormatter::SHORT);
+                                    ?>
+                                </td>
+                                <td>
+                                    <?= $this->dateFormat(
+                                        $item->getModifiedAt(),
+                                        \IntlDateFormatter::MEDIUM,
+                                        \IntlDateFormatter::SHORT);
+                                    ?>
+                                </td>
                                 <td class="text-center">
 
                                     <?php /** @var string $identifierTrashModal */ ?>

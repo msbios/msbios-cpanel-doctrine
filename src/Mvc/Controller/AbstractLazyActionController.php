@@ -9,12 +9,17 @@ namespace MSBios\CPanel\Doctrine\Mvc\Controller;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use MSBios\CPanel\Doctrine\Initializer;
 use MSBios\CPanel\Mvc\Controller\AbstractLazyActionController as DefaultAbstractLazyActionController;
+use MSBios\Guard\Resource\Doctrine\BlameableAwareInterface;
+use MSBios\Resource\Doctrine\EntityInterface;
+use MSBios\Resource\Doctrine\TimestampableAwareInterface;
 use MSBios\Resource\Entity;
 use Zend\Config\Config;
 use Zend\Form\FormInterface;
+use Zend\Hydrator\HydratorInterface;
 use Zend\Paginator\Paginator;
 use Zend\Stdlib\Parameters;
 use Zend\Stdlib\RequestInterface;
@@ -41,22 +46,26 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
     use Initializer\EntityManagerAwareTrait;
 
     /**
+     * @param string $alias
+     * @return QueryBuilder
+     */
+    public function getQueryBuilder($alias = 'resource')
+    {
+        /** @var QueryBuilder $queryBuilder */
+        return $this->getEntityManager()->getRepository(
+            get_class($this->getObjectPrototype())
+        )->createQueryBuilder($alias);
+    }
+
+    /**
      * @return ViewModel
      */
     public function indexAction()
     {
-        /** @var ObjectRepository $entityRepository */
-        $entityRepository = $this->getEntityManager()->getRepository(
-            get_class($this->getObjectPrototype())
-        );
-
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $entityRepository->createQueryBuilder('resource');
-
         /** @var Paginator $paginator */
         $paginator = (new Paginator(
             new DoctrineAdapter(
-                new ORMPaginator($queryBuilder)
+                new ORMPaginator($this->getQueryBuilder())
             )
         ))->setItemCountPerPage(self::DEFAULT_ITEM_COUNT_PER_PAGE);
 
@@ -109,11 +118,32 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
             $form->setData($parameters);
 
             if ($form->isValid()) {
+
+                /** @var EntityInterface $entity */
                 $entity = $form->getData();
 
-                // TODO: need move to listener
-                $entity->setCreator($this->identity());
-                $entity->setEditor($entity->getCreator());
+                if (!$entity instanceof EntityInterface) {
+                    $entity = (new DoctrineObject($this->getEntityManager()))->hydrate(
+                        $entity,
+                        $this->getObjectPrototype()
+                    );
+                }
+
+                // TODO: Move to event listeners
+
+                if ($entity instanceof TimestampableAwareInterface) {
+                    // TODO: move to event
+                    $entity->setCreatedAt(new \DateTime('now'));
+                    $entity->setModifiedAt(new \DateTime('now'));
+                }
+
+                if ($entity instanceof BlameableAwareInterface) {
+                    // TODO: move to event
+                    $entity->setCreator($this->identity());
+                    $entity->setEditor($entity->getCreator());
+                }
+
+                // TODO: Move to event listeners
 
                 // fire event
                 $this->getEventManager()->trigger(
@@ -173,14 +203,22 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
             ->getRouteMatch()
             ->getMatchedRouteName();
 
-        if (! $object) {
+        if (!$object) {
             return $this->redirect()->toRoute(
                 $matchedRouteName
             );
         }
 
         /** @var FormInterface $form */
-        $form = $this->getForm()->bind($object);
+        $form = $this->getForm();
+
+        if (!$form->getHydrator() instanceof HydratorInterface) {
+            $form->setData(
+                (new DoctrineObject($this->getEntityManager()))->extract($object)
+            );
+        } else {
+            $form->bind($object);
+        }
 
         /** @var RequestInterface $request */
         $request = $this->getRequest();
@@ -193,11 +231,28 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
 
             if ($form->isValid()) {
 
-                /** @var Entity $entity */
+                /** @var EntityInterface $entity */
                 $entity = $form->getData();
 
-                // TODO: need move to listener
-                $entity->setEditor($this->identity());
+                if (!$entity instanceof EntityInterface) {
+                    $entity = (new DoctrineObject($this->getEntityManager()))->hydrate(
+                        $entity,
+                        $object
+                    );
+                }
+
+                // TODO: Move to event listeners
+
+                if ($entity instanceof TimestampableAwareInterface) {
+                    $entity->setModifiedAt(new \DateTime('now'));
+                }
+
+                if ($entity instanceof BlameableAwareInterface) {
+                    // TODO: move to event
+                    $entity->setEditor($this->identity());
+                }
+
+                // TODO: Move to event listeners
 
                 // fire event
                 $this->getEventManager()->trigger(
