@@ -22,6 +22,8 @@ class LazyControllerInitializer implements InitializerInterface
      */
     public function __invoke(ContainerInterface $container, $instance)
     {
+        // TODO: Doctrine has ObjectManagerAwareInterface
+
         if ($instance instanceof EntityManagerAwareInterface) {
             $instance->setEntityManager(
                 $container->get(EntityManager::class)
@@ -34,4 +36,15 @@ class LazyControllerInitializer implements InitializerInterface
             );
         }
     }
+
+    /**
+     * @param $an_array
+     * @return LazyControllerInitializer
+     */
+    public static function __set_state($an_array)
+    {
+        return new self();
+    }
+
+
 }

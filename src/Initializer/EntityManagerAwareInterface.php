@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * Interface EntityManagerAwareInterface
  * @package MSBios\CPanel\Doctrine\Initializer
+ * @deprecated DoctrineModule has ObjectManagerAwareInterface
  */
 interface EntityManagerAwareInterface
 {
