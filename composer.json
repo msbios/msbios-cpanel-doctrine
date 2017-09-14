@@ -29,7 +29,8 @@
     "zendframework/zend-modulemanager": "^2.8",
     "msbios/cpanel": "~1.0",
     "msbios/resource-doctrine": "~1.0",
-    "msbios/guard-cpanel-doctrine": "~1.0"
+    "msbios/guard-cpanel-doctrine": "~1.0",
+    "msbios/form-doctrine": "~1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.7",
