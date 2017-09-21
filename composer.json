@@ -39,42 +39,6 @@
     "msbios/application": "^1.0",
     "msbios/debug": "^1.0"
   },
-  "repositories": [
-    {
-      "type": "path",
-      "url": "../msbios-application/"
-    }, {
-      "type": "path",
-      "url": "../msbios-doctrine/"
-    }, {
-      "type": "path",
-      "url": "../msbios-authentication/"
-    }, {
-      "type": "path",
-      "url": "../msbios-guard-resource/"
-    }, {
-      "type": "path",
-      "url": "../msbios-guard/"
-    }, {
-      "type": "path",
-      "url": "../msbios-guard-cpanel/"
-    }, {
-      "type": "path",
-      "url": "../msbios-guard-cpanel-doctrine/"
-    }, {
-      "type": "path",
-      "url": "../msbios-resource/"
-    }, {
-      "type": "path",
-      "url": "../msbios-resource-doctrine/"
-    }, {
-      "type": "path",
-      "url": "../msbios-cpanel/"
-    }, {
-      "type": "path",
-      "url": "../msbios-debug/"
-    }
-  ],
   "scripts": {
     "cs-check": "phpcs",
     "cs-fix": "phpcbf",
@@ -84,7 +48,10 @@
     ],
     "cleanup": "rm ./data/cache/*.php && rm ./data/logs/*.log",
     "alter": "./vendor/bin/doctrine-module orm:schema-tool:update --force",
-    "assets": "cd bin && ln -s ../vendor/msbios/cpanel/themes/limitless/public/ limitless",
+    "themes": [
+      "cd bin && ln -s ../vendor/msbios/cpanel/themes/limitless/public/ limitless",
+      "cd bin && ln -s ../vendor/msbios/application/themes/default/public/ default"
+    ],
     "serve": "php -S 0.0.0.0:3107 -t bin bin/msbios-cpanel-doctrine-module.php",
     "commit": "git add . && git commit -a -m \"Lazy Composer Commiter\" && git push"
   }
