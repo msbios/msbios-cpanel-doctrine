@@ -128,8 +128,7 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
                 if (! $entity instanceof EntityInterface) {
                     /** @var EntityInterface $entity */
                     $entity = (new DoctrineObject($this->getEntityManager()))->hydrate(
-                        $entity,
-                        $this->getObjectPrototype()
+                        $entity, $this->getObjectPrototype()
                     );
                 }
 
@@ -221,7 +220,7 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
                 (new DoctrineObject($this->getEntityManager()))->extract($object)
             );
         } else {
-            $form->bind($object);
+            $form->bind(clone $object);
         }
 
         /** @var RequestInterface $request */
