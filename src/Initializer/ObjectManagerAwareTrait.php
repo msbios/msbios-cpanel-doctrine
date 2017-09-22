@@ -3,6 +3,7 @@
  * @access protected
  * @author Judzhin Miles <info[woof-woof]msbios.com>
  */
+
 namespace MSBios\CPanel\Doctrine\Initializer;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -19,7 +20,7 @@ trait ObjectManagerAwareTrait
     /**
      * @return ObjectManager
      */
-    public function getObjectManager(): ObjectManager
+    public function getObjectManager()
     {
         return $this->objectManager;
     }
