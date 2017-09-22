@@ -6,6 +6,7 @@
 namespace MSBios\CPanel\Doctrine\Initializer;
 
 use Doctrine\ORM\EntityManager;
+use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Initializer\InitializerInterface;
@@ -23,9 +24,14 @@ class LazyControllerInitializer implements InitializerInterface
     public function __invoke(ContainerInterface $container, $instance)
     {
         // TODO: Doctrine has ObjectManagerAwareInterface
-
         if ($instance instanceof EntityManagerAwareInterface) {
             $instance->setEntityManager(
+                $container->get(EntityManager::class)
+            );
+        }
+
+        if ($instance instanceof ObjectManagerAwareInterface) {
+            $instance->setObjectManager(
                 $container->get(EntityManager::class)
             );
         }
