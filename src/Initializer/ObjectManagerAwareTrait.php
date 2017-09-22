@@ -5,7 +5,7 @@
  */
 namespace MSBios\CPanel\Doctrine\Initializer;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * Trait ObjectManagerAwareTrait
@@ -13,22 +13,22 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 trait ObjectManagerAwareTrait
 {
-    /** @var EntityManagerInterface */
+    /** @var ObjectManager */
     protected $objectManager;
 
     /**
-     * @return EntityManagerInterface
+     * @return ObjectManager
      */
-    public function getObjectManager(): EntityManagerInterface
+    public function getObjectManager(): ObjectManager
     {
         return $this->objectManager;
     }
 
     /**
-     * @param EntityManagerInterface $objectManager
-     * @return EntityManagerInterface
+     * @param ObjectManager $objectManager
+     * @return $this
      */
-    public function setObjectManager(EntityManagerInterface $objectManager): EntityManagerInterface
+    public function setObjectManager(ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
         return $this;
