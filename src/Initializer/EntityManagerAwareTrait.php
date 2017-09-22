@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * Trait EntityManagerAwareTrait
  * @package MSBios\CPanel\Doctrine\Initializer
+ * @deprecated Not need, becouse use ObjectManagerAwareInterface
  */
 trait EntityManagerAwareTrait
 {

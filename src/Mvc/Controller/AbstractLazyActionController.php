@@ -8,6 +8,7 @@ namespace MSBios\CPanel\Doctrine\Mvc\Controller;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use MSBios\CPanel\Doctrine\Initializer;
@@ -28,7 +29,8 @@ use Zend\View\Model\ViewModel;
  */
 abstract class AbstractLazyActionController extends DefaultAbstractLazyActionController implements
     Initializer\DoctrineHydratorAwareInterface,
-    Initializer\EntityManagerAwareInterface
+    Initializer\EntityManagerAwareInterface,
+    ObjectManagerAwareInterface
 {
     /** @const EVENT_PERSIST_OBJECT */
     const EVENT_PERSIST_OBJECT = 'persist.object';
@@ -41,6 +43,7 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
 
     use Initializer\DoctrineHydratorAwareTrait;
     use Initializer\EntityManagerAwareTrait;
+    use Initializer\ObjectManagerAwareTrait;
 
     /**
      * @param string $alias
@@ -49,7 +52,7 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
     protected function getQueryBuilder($alias = 'resource')
     {
         /** @var QueryBuilder $queryBuilder */
-        return $this->getEntityManager()->getRepository(
+        return $this->getObjectManager()->getRepository(
             get_class($this->getObjectPrototype())
         )->createQueryBuilder($alias);
     }
