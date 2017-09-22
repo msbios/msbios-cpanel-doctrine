@@ -20,16 +20,16 @@ trait ObjectManagerAwareTrait
     /**
      * @return ObjectManager
      */
-    public function getObjectManager()
+    public function getObjectManager():ObjectManager
     {
         return $this->objectManager;
     }
 
     /**
      * @param ObjectManager $objectManager
-     * @return $this
+     * @return ObjectManagerAwareTrait
      */
-    public function setObjectManager(ObjectManager $objectManager)
+    public function setObjectManager(ObjectManager $objectManager): ObjectManagerAwareTrait
     {
         $this->objectManager = $objectManager;
         return $this;
