@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "b6806fec4a0d2fd418e9ec7f334634b4",
+=======
+    "content-hash": "8aaf3400cf73f937fd7afe1a2a135915",
+>>>>>>> a891459f32f8ba4cf99bc5b42c8a28ce36b4549c
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1201,6 +1205,55 @@
                 "php"
             ],
             "time": "2017-09-19T12:35:27+00:00"
+<<<<<<< HEAD
+=======
+        },
+        {
+            "name": "msbios/form-doctrine",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/msbios/msbios-form-doctrine.git",
+                "reference": "48fb79d58b4c05aba46eeefa19530444e1521e5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/msbios/msbios-form-doctrine/zipball/48fb79d58b4c05aba46eeefa19530444e1521e5d",
+                "reference": "48fb79d58b4c05aba46eeefa19530444e1521e5d",
+                "shasum": ""
+            },
+            "require": {
+                "msbios/doctrine": "~1.0",
+                "zendframework/zend-form": "^2.10"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7",
+                "squizlabs/php_codesniffer": "^3.0",
+                "zendframework/zend-test": "^3.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MSBios\\Form\\Doctrine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL"
+            ],
+            "authors": [
+                {
+                    "name": "Judzhin Miles",
+                    "email": "info@msbios.com"
+                }
+            ],
+            "description": "MSBios Form Doctrine",
+            "homepage": "https://github.com/msbios/msbios-form-doctrine",
+            "keywords": [
+                "php"
+            ],
+            "time": "2017-09-14T07:08:53+00:00"
+>>>>>>> a891459f32f8ba4cf99bc5b42c8a28ce36b4549c
         },
         {
             "name": "msbios/guard",
@@ -1300,6 +1353,58 @@
                 "php"
             ],
             "time": "2017-09-19T09:46:11+00:00"
+<<<<<<< HEAD
+=======
+        },
+        {
+            "name": "msbios/guard-cpanel-doctrine",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/msbios/msbios-guard-cpanel-doctrine.git",
+                "reference": "764aa4f03405317f6ea85c8def8b0131a05442f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/msbios/msbios-guard-cpanel-doctrine/zipball/764aa4f03405317f6ea85c8def8b0131a05442f2",
+                "reference": "764aa4f03405317f6ea85c8def8b0131a05442f2",
+                "shasum": ""
+            },
+            "require": {
+                "msbios/authentication-doctrine": "~1.0",
+                "msbios/guard-resource-doctrine": "~1.0",
+                "zendframework/zend-loader": "^2.5",
+                "zendframework/zend-modulemanager": "^2.8",
+                "zendframework/zend-servicemanager": "^3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7",
+                "squizlabs/php_codesniffer": "^3.0",
+                "zendframework/zend-test": "^3.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MSBios\\Guard\\CPanel\\Doctrine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL"
+            ],
+            "authors": [
+                {
+                    "name": "Judzhin Miles",
+                    "email": "info@msbios.com"
+                }
+            ],
+            "description": "MSBios Guard CPanel",
+            "homepage": "https://github.com/msbios/msbios-guard-cpanel-doctrine",
+            "keywords": [
+                "php"
+            ],
+            "time": "2017-09-11T12:22:04+00:00"
+>>>>>>> a891459f32f8ba4cf99bc5b42c8a28ce36b4549c
         },
         {
             "name": "msbios/guard-resource",
@@ -1352,6 +1457,68 @@
             "time": "2017-09-11T07:40:48+00:00"
         },
         {
+<<<<<<< HEAD
+            "name": "msbios/msbios",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/msbios/msbios-msbios.git",
+                "reference": "a6bd079074429a3059ece54b771781c3a09f3195"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/msbios/msbios-msbios/zipball/a6bd079074429a3059ece54b771781c3a09f3195",
+                "reference": "a6bd079074429a3059ece54b771781c3a09f3195",
+=======
+            "name": "msbios/guard-resource-doctrine",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/msbios/msbios-guard-resource-doctrine.git",
+                "reference": "b73be9d5943d8bdef3abddea00e4d114cbbe5781"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/msbios/msbios-guard-resource-doctrine/zipball/b73be9d5943d8bdef3abddea00e4d114cbbe5781",
+                "reference": "b73be9d5943d8bdef3abddea00e4d114cbbe5781",
+>>>>>>> a891459f32f8ba4cf99bc5b42c8a28ce36b4549c
+                "shasum": ""
+            },
+            "require": {
+                "zendframework/zend-loader": "^2.5",
+                "zendframework/zend-modulemanager": "^2.8"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7",
+                "squizlabs/php_codesniffer": "^3.0",
+                "zendframework/zend-test": "^3.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MSBios\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL"
+            ],
+            "authors": [
+                {
+                    "name": "Judzhin Miles",
+                    "email": "info@msbios.com"
+                }
+            ],
+            "description": "MSBios Library",
+            "homepage": "https://github.com/msbios/msbios",
+            "keywords": [
+                "php"
+            ],
+<<<<<<< HEAD
+=======
+            "time": "2017-09-12T06:47:11+00:00"
+        },
+        {
             "name": "msbios/msbios",
             "version": "v1.0.2",
             "source": {
@@ -1395,6 +1562,7 @@
             "keywords": [
                 "php"
             ],
+>>>>>>> a891459f32f8ba4cf99bc5b42c8a28ce36b4549c
             "time": "2017-09-13T07:21:16+00:00"
         },
         {

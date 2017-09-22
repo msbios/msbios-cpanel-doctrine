@@ -108,7 +108,10 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
         $request = $this->getRequest();
 
         if ($request->isPost()) {
-            $form->setObject($this->getObjectPrototype());
+
+            if ($form->getHydrator() instanceof DoctrineObject) {
+                $form->setObject($this->getObjectPrototype());
+            }
 
             /** @var Parameters $parameters */
             $parameters = $request->getPost();
