@@ -6,8 +6,6 @@
 
 namespace MSBios\CPanel\Doctrine;
 
-use MSBios\Resource\Doctrine\Entity\Layout;
-
 $this->headScript()
     ->appendFile($this->basePath('limitless/assets/js/plugins/forms/styling/switch.min.js'))
     ->appendFile($this->basePath('limitless/assets/js/plugins/forms/styling/switchery.min.js'))
@@ -84,7 +82,7 @@ $this->headScript()
                         </thead>
 
                         <tbody>
-                        <?php /** @var Layout $item */ ?>
+                        <?php /** @var \MSBios\Resource\Doctrine\Entity\Layout $item */ ?>
                         <?php foreach ($this->paginator as $item): ?>
                             <tr>
                                 <td><?= $this->escapeHtml($item->getTitle()); ?></td>

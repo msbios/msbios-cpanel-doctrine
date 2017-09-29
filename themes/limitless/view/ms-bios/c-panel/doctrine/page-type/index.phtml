@@ -3,7 +3,7 @@
  * @access protected
  * @author Judzhin Miles <info[woof-woof]msbios.com>
  */
-namespace MSBios\CPanel;
+namespace MSBios\CPanel\Doctrine;
 
 $this->headScript()
     ->appendFile($this->basePath('limitless/assets/js/plugins/forms/styling/switch.min.js'))
@@ -82,11 +82,11 @@ $this->headScript()
                         </thead>
 
                         <tbody>
-                        <?php /** @var \MSBios\Resource\Entity\PageType $item */ ?>
+                        <?php /** @var \MSBios\Resource\Doctrine\Entity\PageType $item */ ?>
                         <?php foreach ($this->paginator as $item): ?>
                             <tr>
                                 <td><?= $this->escapeHtml($item->getTitle()); ?></td>
-                                <td><?= $this->escapeHtml($item->getModule()); ?></td>
+                                <td><?= $this->escapeHtml($item->getModule()->getTitle()); ?></td>
                                 <td><?= $this->escapeHtml($item->getController()); ?></td>
                                 <td><?= $this->escapeHtml($item->getAction()); ?></td>
                                 <td><?= $this->escapeHtml($item->getIcon()); ?></td>

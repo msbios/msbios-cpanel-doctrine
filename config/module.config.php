@@ -10,72 +10,38 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
 
-    'router' => [
-        'routes' => [
-            'cpanel' => [
-                'options' => [
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                    ],
-                ],
-                'may_terminate' => true,
-                'child_routes' => [
-                    'layout' => [
-                        'options' => [
-                            'defaults' => [
-                                'controller' => Controller\LayoutController::class,
-                            ],
-                        ],
-                    ],
-                    'module' => [
-                        'options' => [
-                            'defaults' => [
-                                'controller' => Controller\ModuleController::class,
-                            ],
-                        ],
-                    ],
-                    'page-type' => [
-                        'options' => [
-                            'defaults' => [
-                                'controller' => Controller\PageTypeController::class,
-                            ],
-                        ],
-                    ],
-                    'route' => [
-                        'options' => [
-                            'defaults' => [
-                                'controller' => Controller\RouteController::class,
-                            ],
-                        ],
-                    ],
-                    'setting' => [
-                        'options' => [
-                            'defaults' => [
-                                'controller' => Controller\SettingController::class,
-                            ],
-                        ],
-                    ],
-                    'theme' => [
-                        'options' => [
-                            'defaults' => [
-                                'controller' => Controller\ThemeController::class,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ],
-    ],
-
     'controllers' => [
         'factories' => [
-            Controller\IndexController::class => InvokableFactory::class,
-            Controller\LayoutController::class => InvokableFactory::class,
-            Controller\ModuleController::class => InvokableFactory::class,
-            Controller\PageTypeController::class => InvokableFactory::class,
-            Controller\RouteController::class => InvokableFactory::class,
-            Controller\SettingController::class => InvokableFactory::class,
-            Controller\ThemeController::class => InvokableFactory::class,
+            Controller\IndexController::class =>
+                InvokableFactory::class,
+            Controller\LayoutController::class =>
+                InvokableFactory::class,
+            Controller\ModuleController::class =>
+                InvokableFactory::class,
+            Controller\PageTypeController::class =>
+                InvokableFactory::class,
+            Controller\RouteController::class =>
+                InvokableFactory::class,
+            Controller\SettingController::class =>
+                InvokableFactory::class,
+            Controller\ThemeController::class =>
+                InvokableFactory::class,
+        ],
+        'aliases' => [
+            \MSBios\CPanel\Controller\IndexController::class =>
+                Controller\IndexController::class,
+            \MSBios\CPanel\Controller\LayoutController::class =>
+                Controller\LayoutController::class,
+            \MSBios\CPanel\Controller\ModuleController::class =>
+                Controller\ModuleController::class,
+            \MSBios\CPanel\Controller\PageTypeController::class =>
+                Controller\PageTypeController::class,
+            \MSBios\CPanel\Controller\RouteController::class =>
+                Controller\RouteController::class,
+            \MSBios\CPanel\Controller\SettingController::class =>
+                Controller\SettingController::class,
+            \MSBios\CPanel\Controller\ThemeController::class =>
+                Controller\ThemeController::class
         ],
         'initializers' => [
             new Initializer\LazyControllerInitializer
@@ -89,7 +55,7 @@ return [
             Controller\ModuleController::class =>
                 \MSBios\Resource\Form\ModuleForm::class,
             Controller\PageTypeController::class =>
-                \MSBios\Resource\Form\ModuleForm::class,
+                \MSBios\Resource\Form\PageTypeForm::class,
         ],
     ],
 
@@ -104,6 +70,20 @@ return [
             'limitless' => [
                 // Template Map
                 'template_map' => [
+                    'ms-bios/c-panel/doctrine/layout/add' =>
+                        __DIR__ . '/../themes/limitless/view/ms-bios/c-panel/doctrine/layout/form.phtml',
+                    'ms-bios/c-panel/doctrine/layout/edit' =>
+                        __DIR__ . '/../themes/limitless/view/ms-bios/c-panel/doctrine/layout/form.phtml',
+
+                    'ms-bios/c-panel/doctrine/module/add' =>
+                        __DIR__ . '/../themes/limitless/view/ms-bios/c-panel/doctrine/module/form.phtml',
+                    'ms-bios/c-panel/doctrine/module/edit' =>
+                        __DIR__ . '/../themes/limitless/view/ms-bios/c-panel/doctrine/module/form.phtml',
+
+                    'ms-bios/c-panel/doctrine/page-type/add' =>
+                        __DIR__ . '/../themes/limitless/view/ms-bios/c-panel/doctrine/page-type/form.phtml',
+                    'ms-bios/c-panel/doctrine/page-type/edit' =>
+                        __DIR__ . '/../themes/limitless/view/ms-bios/c-panel/doctrine/page-type/form.phtml',
                 ],
                 // Template Path Stack
                 'template_path_stack' => [

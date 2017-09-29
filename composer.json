@@ -33,7 +33,10 @@
     "zendframework/zend-test": "^3.1",
     "squizlabs/php_codesniffer": "^3.0",
     "msbios/application": "^1.0",
-    "msbios/debug": "^1.0"
+    "msbios/debug": "^1.0",
+    "msbios/authentication-doctrine": "^1.0",
+    "msbios/guard-resource-doctrine": "^1.0",
+    "msbios/guard-cpanel-doctrine": "^1.0"
   },
   "scripts": {
     "cs-check": "phpcs",

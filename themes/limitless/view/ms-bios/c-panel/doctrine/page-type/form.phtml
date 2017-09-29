@@ -17,33 +17,49 @@ $form->prepare();
 ?>
 
 <div class="panel panel-flat">
-    <div class="panel-heading">
-        <h5 class="panel-title">
-            <?= $current->getLabel(); ?>
-            <a class="heading-elements-toggle"><i class="icon-more"></i></a>
-        </h5>
-
-        <div class="heading-elements">
-            <ul class="icons-list">
-                <li><a data-action="collapse"></a></li>
-                <li><a data-action="reload"></a></li>
-                <li><a data-action="close"></a></li>
-            </ul>
-        </div>
-
-    </div>
 
     <div class="panel-body">
-        <p class="content-group-lg">Examples of standard form controls supported in an example form layout. Individual
-            form controls automatically receive some global styling. All textual <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>,
-            and <code>&lt;select&gt;</code> elements with <code>.form-control</code> are set to <code>width:
-                100%;</code> by default. Wrap labels and controls in <code>.form-group</code> for optimum spacing.
-            Labels in horizontal form require <code>.control-label</code> class.</p>
 
         <?= $this->form()->openTag($form->setAttributes([
             'class' => 'form-horizontal',
             'role' => 'form'
         ])); ?>
+
+        <?= $this->partial('partial/element.phtml', [
+            'element' => $form->get('module')
+                ->setAttributes([
+                    'required' => 'required',
+                    'placeholder' => $this->translate('Enter layout title')
+                ]),
+            'label' => $this->translate('Module'),
+        ]); ?>
+
+        <?= $this->partial('partial/element.phtml', [
+            'element' => $form->get('controller')
+                ->setAttributes([
+                    'required' => 'required',
+                    'placeholder' => $this->translate('Enter Controller Name')
+                ]),
+            'label' => $this->translate('Controller'),
+        ]); ?>
+
+        <?= $this->partial('partial/element.phtml', [
+            'element' => $form->get('action')
+                ->setAttributes([
+                    'required' => 'required',
+                    'placeholder' => $this->translate('Enter Controller Action')
+                ]),
+            'label' => $this->translate('Action'),
+        ]); ?>
+
+        <?= $this->partial('partial/element.phtml', [
+            'element' => $form->get('icon')
+                ->setAttributes([
+                    'required' => 'required',
+                    'placeholder' => $this->translate('Enter Icon')
+                ]),
+            'label' => $this->translate('Icon'),
+        ]); ?>
 
         <?= $this->partial('partial/element.phtml', [
             'element' => $form->get('title')
@@ -52,15 +68,6 @@ $form->prepare();
                     'placeholder' => $this->translate('Enter layout title')
                 ]),
             'label' => $this->translate('Title'),
-        ]); ?>
-
-        <?= $this->partial('partial/element.phtml', [
-            'element' => $form->get('template')
-                ->setAttributes([
-                    'required' => 'required',
-                    'placeholder' => $this->translate('Enter layout identifier')
-                ]),
-            'label' => $this->translate('Template')
         ]); ?>
 
         <div class="text-right">
