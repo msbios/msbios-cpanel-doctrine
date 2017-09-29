@@ -56,6 +56,8 @@ return [
                 \MSBios\Resource\Form\ModuleForm::class,
             Controller\PageTypeController::class =>
                 \MSBios\Resource\Form\PageTypeForm::class,
+            Controller\ThemeController::class =>
+                \MSBios\Resource\Form\ThemeForm::class
         ],
     ],
 
