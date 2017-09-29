@@ -51,6 +51,4 @@ class LazyControllerInitializer implements InitializerInterface
     {
         return new self();
     }
-
-
 }

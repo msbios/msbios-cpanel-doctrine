@@ -34,5 +34,4 @@ trait ObjectManagerAwareTrait
         $this->objectManager = $objectManager;
         return $this;
     }
-
 }
