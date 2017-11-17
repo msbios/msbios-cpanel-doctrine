@@ -24,28 +24,20 @@
     }
   },
   "require": {
-    "msbios/cpanel": "~1.0",
-    "msbios/resource-doctrine": "~1.0",
-    "msbios/form-doctrine": "~1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.7",
-    "zendframework/zend-test": "^3.1",
-    "squizlabs/php_codesniffer": "^3.0",
-    "msbios/application": "^1.0",
-    "msbios/debug": "^1.0",
-    "msbios/authentication-doctrine": "^1.0",
-    "msbios/guard-resource-doctrine": "^1.0",
-    "msbios/guard-cpanel-doctrine": "^1.0"
+    "msbios/test": "^1.0",
+    "msbios/debug": "^1.0"
   },
   "scripts": {
     "cs-check": "phpcs",
     "cs-fix": "phpcbf",
     "test": [
       "@cs-check",
-      "phpunit"
+      "phpunit --colors=always"
     ],
-    "cleanup": "rm ./data/cache/*.php && rm ./data/logs/*.log",
+    "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
+    "upload-coverage": "coveralls -v",
     "alter": "./vendor/bin/doctrine-module orm:schema-tool:update --force",
     "themes": [
       "cd bin && ln -s ../vendor/msbios/cpanel/themes/limitless/public/ limitless",
