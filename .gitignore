@@ -30,7 +30,7 @@ extras/documentation
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-.idea/
+.idea
 
 ## File-based project format:
 *.iws
@@ -119,5 +119,5 @@ composer.phar
 # You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
 # composer.lock
 
-bin/default
-bin/limitless
+public/default
+public/limitless

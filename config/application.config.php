@@ -8,6 +8,15 @@
 return [
     // Retrieve list of modules used in this application.
     'modules' => [
+        'MSBios\Db',
+        'Zend\Db',
+        'MSBios\Form\Doctrine',
+        'MSBios\Doctrine',
+        'Zend\Cache',
+        'Zend\Paginator',
+        'MSBios\Form',
+        'Zend\Filter',
+        'MSBios\I18n',
         'Zend\Form',
         'Zend\Mvc\Plugin\FilePrg',
         'Zend\Mvc\Plugin\Identity',
