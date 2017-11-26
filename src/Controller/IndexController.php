@@ -8,19 +8,20 @@
 namespace MSBios\CPanel\Doctrine\Controller;
 
 use MSBios\CPanel\Controller\IndexController as DefaultIndexController;
-use MSBios\CPanel\Mvc\Controller\AbstractActionController;
+
+// use MSBios\CPanel\Mvc\Controller\AbstractActionController;
 
 /**
  * Class IndexController
  * @package MSBios\CPanel\Doctrine\Controller
  */
-class IndexController extends AbstractActionController
+class IndexController extends DefaultIndexController
 {
-    /**
-     * @return string
-     */
-    public function getResourceId()
-    {
-        return DefaultIndexController::class;
-    }
+//    /**
+//     * @return string
+//     */
+//    public function getResourceId()
+//    {
+//        return DefaultIndexController::class;
+//    }
 }

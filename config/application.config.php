@@ -8,15 +8,11 @@
 return [
     // Retrieve list of modules used in this application.
     'modules' => [
-        'MSBios\Db',
+
         'Zend\Db',
-        'MSBios\Form\Doctrine',
-        'MSBios\Doctrine',
         'Zend\Cache',
         'Zend\Paginator',
-        'MSBios\Form',
         'Zend\Filter',
-        'MSBios\I18n',
         'Zend\Form',
         'Zend\Mvc\Plugin\FilePrg',
         'Zend\Mvc\Plugin\Identity',
@@ -31,22 +27,29 @@ return [
         'DoctrineModule',
         'DoctrineORMModule',
 
+        'MSBios\Db',
+        'MSBios\I18n',
+        'MSBios\Form',
         'MSBios\Assetic',
         'MSBios\Widget',
         'MSBios\Theme',
         'MSBios\Navigation',
         'MSBios\Application',
-        'MSBios\Authentication',
+
         'MSBios\Guard',
-        'MSBios\Resource',
         'MSBios\CPanel',
+        'MSBios\Resource',
+        'MSBios\Authentication',
+        'MSBios\Guard\Resource',
+        'MSBios\Guard\CPanel',
+
+        'MSBios\Doctrine',
+        'MSBios\Form\Doctrine',
+        'MSBios\CPanel\Doctrine',
         'MSBios\Resource\Doctrine',
         'MSBios\Authentication\Doctrine',
-        'MSBios\Guard\CPanel',
-        'MSBios\Guard\Resource',
         'MSBios\Guard\Resource\Doctrine',
         'MSBios\Guard\CPanel\Doctrine',
-        'MSBios\CPanel\Doctrine',
 
         'Zend\Log',
         'ZendDeveloperTools',

@@ -13,7 +13,7 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class =>
-                InvokableFactory::class,
+                Factory\IndexControllerFactory::class,
             Controller\LayoutController::class =>
                 InvokableFactory::class,
             Controller\ModuleController::class =>
