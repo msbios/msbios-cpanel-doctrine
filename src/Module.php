@@ -6,6 +6,8 @@
 
 namespace MSBios\CPanel\Doctrine;
 
+use MSBios\AutoloaderAwareInterface;
+use MSBios\ModuleAwareInterface;
 use MSBios\ModuleInterface;
 use Zend\Loader\AutoloaderFactory;
 use Zend\Loader\StandardAutoloader;
@@ -14,11 +16,14 @@ use Zend\Loader\StandardAutoloader;
  * Class Module
  * @package MSBios\CPanel\Doctrine
  */
-class Module implements ModuleInterface
+class Module implements
+    ModuleInterface,
+    ModuleAwareInterface,
+    AutoloaderAwareInterface
 {
 
     /** @const VERSION */
-    const VERSION = '1.0.18';
+    const VERSION = '1.0.19';
 
     /**
      * @return mixed

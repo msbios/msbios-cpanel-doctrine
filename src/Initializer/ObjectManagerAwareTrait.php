@@ -11,6 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * Trait ObjectManagerAwareTrait
  * @package MSBios\CPanel\Doctrine\Initializer
+ * @deprecated use MSBios\Doctrine\ObjectManagerAwareTrait
  */
 trait ObjectManagerAwareTrait
 {
