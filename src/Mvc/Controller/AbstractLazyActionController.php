@@ -26,6 +26,7 @@ use Zend\View\Model\ViewModel;
 /**
  * Class AbstractLazyActionController
  * @package MSBios\CPanel\Doctrine\Mvc\Controller
+ * @deprecated
  */
 abstract class AbstractLazyActionController extends DefaultAbstractLazyActionController implements
     Initializer\DoctrineHydratorAwareInterface,

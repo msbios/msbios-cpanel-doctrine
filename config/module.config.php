@@ -68,11 +68,6 @@ return [
         ],
     ],
 
-    'service_manager' => [
-        'abstract_factories' => [],
-        'factories' => [],
-    ],
-
     \MSBios\Theme\Module::class => [
 
         'themes' => [

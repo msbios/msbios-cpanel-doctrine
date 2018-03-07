@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @access protected
+ * @author Judzhin Miles <info[woof-woof]msbios.com>
+ */
 return [
     'doctrine' => [
         'connection' => [
@@ -9,7 +13,7 @@ return [
                     'user' => 'root',
                     'password' => 'root',
                     'dbname' => 'portal.dev',
-                ]
+                ],
             ],
         ],
     ],
