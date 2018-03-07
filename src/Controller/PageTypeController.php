@@ -6,6 +6,7 @@
 namespace MSBios\CPanel\Doctrine\Controller;
 
 use MSBios\CPanel\Controller\PageTypeController as DefaultPageTypeController;
+use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractActionController;
 use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
 use MSBios\Resource\Doctrine\Entity\PageType;
 
@@ -13,7 +14,7 @@ use MSBios\Resource\Doctrine\Entity\PageType;
  * Class PageTypeController
  * @package MSBios\CPanel\Doctrine\Controller
  */
-class PageTypeController extends AbstractLazyActionController
+class PageTypeController extends AbstractActionController // AbstractLazyActionController
 {
     /**
      * PageTypeController constructor.

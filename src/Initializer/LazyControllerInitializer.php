@@ -14,6 +14,7 @@ use Zend\ServiceManager\Initializer\InitializerInterface;
 /**
  * Class LazyControllerInitializer
  * @package MSBios\CPanel\Doctrine\Initializer
+ * @deprecated remove this class
  */
 class LazyControllerInitializer implements InitializerInterface
 {

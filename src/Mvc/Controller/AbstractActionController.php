@@ -17,6 +17,8 @@ use MSBios\Doctrine\ObjectManagerAwareTrait;
 use MSBios\Form\FormElementManagerAwareInterface;
 use MSBios\Form\FormElementManagerAwareTrait;
 use MSBios\Guard\Resource\Doctrine\BlameableAwareInterface;
+use MSBios\Hydrator\HydratorManagerAwareInterface;
+use MSBios\Hydrator\HydratorManagerAwareTrait;
 use MSBios\Resource\Doctrine\EntityInterface;
 use MSBios\Resource\Doctrine\TimestampableAwareInterface;
 use Zend\Config\Config;
@@ -33,11 +35,12 @@ use Zend\View\Model\ViewModel;
  */
 abstract class AbstractActionController extends DefaultAbstractActionController implements
     ObjectManagerAwareInterface,
-    FormElementManagerAwareInterface // todo: need move to cpanel
+    FormElementManagerAwareInterface, // todo: need move to cpanel
+    HydratorManagerAwareInterface
 {
-
     use ObjectManagerAwareTrait;
     use FormElementManagerAwareTrait;
+    use HydratorManagerAwareTrait;
 
     /** @const EVENT_PERSIST_OBJECT */
     const EVENT_PERSIST_OBJECT = 'persist.object';
@@ -122,10 +125,7 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
 
         /** @var int $id */
         if ($id = $this->params()->fromRoute('id')) {
-            return $this->redirect()->toRoute(
-                $matchedRouteName,
-                ['action' => 'add']
-            );
+            return $this->redirect()->toRoute($matchedRouteName, ['action' => 'add']);
         }
 
         /** @var FormInterface $form */
@@ -152,10 +152,13 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
                 $dem = $this->getObjectManager();
 
                 if (! $entity instanceof EntityInterface) {
+
+                    /** @var HydratorInterface $doh */
+                    $doh = $this->getHydratorManager()
+                        ->get(DoctrineObject::class);
+
                     /** @var EntityInterface $entity */
-                    $entity = (new DoctrineObject($dem))->hydrate(
-                        $entity, $this->getObjectPrototype()
-                    );
+                    $entity = $doh->hydrate($entity, $this->getObjectPrototype());
                 }
 
                 // TODO: Move to event listeners
@@ -200,7 +203,8 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
         }
 
         $form->setAttribute(
-            'action', $this->url()->fromRoute($matchedRouteName, ['action' => 'add'])
+            'action',
+            $this->url()->fromRoute($matchedRouteName, ['action' => 'add'])
         );
 
         return new ViewModel([
@@ -241,7 +245,7 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
         $form = $this->getFormElementManager()->get(get_called_class());
 
         /** @var HydratorInterface $doh */
-        $doh = new DoctrineObject($dem);
+        $doh = $this->getHydratorManager()->get(DoctrineObject::class);
 
         if (! $form->getHydrator() instanceof DoctrineObject) {
             $form->setData($doh->extract($object));
@@ -310,7 +314,8 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
         }
 
         $form->setAttribute(
-            'action', $this->url()->fromRoute($matchedRouteName, ['action' => 'edit', 'id' => $id])
+            'action',
+            $this->url()->fromRoute($matchedRouteName, ['action' => 'edit', 'id' => $id])
         );
 
         return new ViewModel([
@@ -341,7 +346,9 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
         if ($object) {
             // fire event
             $this->getEventManager()->trigger(
-                self::EVENT_REMOVE_OBJECT, $this, ['object' => $object]
+                self::EVENT_REMOVE_OBJECT,
+                $this,
+                ['object' => $object]
             );
 
             $dem->remove($object);

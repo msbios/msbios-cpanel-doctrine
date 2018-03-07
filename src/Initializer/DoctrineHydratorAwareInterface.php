@@ -10,6 +10,7 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 /**
  * Interface DoctrineHydratorAwareInterface
  * @package MSBios\CPanel\Doctrine\Initializer
+ * @deprecated todo: remove in future
  */
 interface DoctrineHydratorAwareInterface
 {

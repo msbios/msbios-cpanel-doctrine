@@ -10,6 +10,7 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 /**
  * Trait DoctrineHydratorAwareTrait
  * @package MSBios\CPanel\Doctrine\Initializer
+ * @deprecated remove in future
  */
 trait DoctrineHydratorAwareTrait
 {

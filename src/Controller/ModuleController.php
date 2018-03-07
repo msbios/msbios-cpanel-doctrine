@@ -6,6 +6,7 @@
 namespace MSBios\CPanel\Doctrine\Controller;
 
 use MSBios\CPanel\Controller\ModuleController as DefaultModuleController;
+use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractActionController;
 use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
 use MSBios\Resource\Doctrine\Entity\Module;
 
@@ -13,7 +14,7 @@ use MSBios\Resource\Doctrine\Entity\Module;
  * Class ModuleController
  * @package MSBios\CPanel\Doctrine\Controller
  */
-class ModuleController extends AbstractLazyActionController
+class ModuleController extends AbstractActionController // AbstractLazyActionController
 {
     /**
      * ModuleController constructor.

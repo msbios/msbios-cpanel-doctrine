@@ -6,6 +6,7 @@
 namespace MSBios\CPanel\Doctrine\Controller;
 
 use MSBios\CPanel\Controller\ThemeController as DefaultThemeController;
+use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractActionController;
 use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
 use MSBios\Resource\Doctrine\Entity\Theme;
 
@@ -13,7 +14,7 @@ use MSBios\Resource\Doctrine\Entity\Theme;
  * Class ThemeController
  * @package MSBios\CPanel\Doctrine\Controller
  */
-class ThemeController extends AbstractLazyActionController
+class ThemeController extends AbstractActionController // AbstractLazyActionController
 {
     /**
      * ThemeController constructor.

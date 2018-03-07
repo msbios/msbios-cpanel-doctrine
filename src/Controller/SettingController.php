@@ -7,6 +7,7 @@
 namespace MSBios\CPanel\Doctrine\Controller;
 
 use MSBios\CPanel\Controller\SettingController as DefaultSettingController;
+use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractActionController;
 use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
 use MSBios\Resource\Doctrine\Entity\Session;
 
@@ -14,7 +15,7 @@ use MSBios\Resource\Doctrine\Entity\Session;
  * Class SettingController
  * @package MSBios\CPanel\Controller
  */
-class SettingController extends AbstractLazyActionController
+class SettingController extends AbstractActionController // AbstractLazyActionController
 {
     /**
      * SettingController constructor.
