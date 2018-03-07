@@ -6,6 +6,7 @@
 
 namespace MSBios\CPanel\Doctrine;
 
+use MSBios\Doctrine\Initializer\ObjectManagerInitializer;
 use MSBios\Form\Initializer\FormElementManagerInitializer;
 use MSBios\Hydrator\Initializer\HydratorManagerInitializer;
 use Zend\ServiceManager\Factory\InvokableFactory;
@@ -48,6 +49,8 @@ return [
         'initializers' => [
             Initializer\LazyControllerInitializer::class =>
                 new Initializer\LazyControllerInitializer, // todo remove in future
+            ObjectManagerInitializer::class =>
+                new ObjectManagerInitializer,
             FormElementManagerInitializer::class =>
                 new FormElementManagerInitializer,
             HydratorManagerInitializer::class =>
