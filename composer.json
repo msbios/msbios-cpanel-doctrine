@@ -1,7 +1,7 @@
 {
   "name": "msbios/cpanel-doctrine",
   "description": "MSBios CPanel Doctrine",
-  "license": "GPL",
+  "license": "MIT",
   "keywords": [
     "php"
   ],
