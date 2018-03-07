@@ -6,32 +6,39 @@
 
 namespace MSBios\CPanel\Doctrine\Mvc\Controller;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
-use MSBios\CPanel\Doctrine\Initializer;
-use MSBios\CPanel\Mvc\Controller\AbstractLazyActionController as DefaultAbstractLazyActionController;
+use MSBios\CPanel\Mvc\Controller\AbstractActionController as DefaultAbstractActionController;
 use MSBios\Doctrine\ObjectManagerAwareTrait;
+use MSBios\Form\FormElementManagerAwareInterface;
+use MSBios\Form\FormElementManagerAwareTrait;
 use MSBios\Guard\Resource\Doctrine\BlameableAwareInterface;
 use MSBios\Resource\Doctrine\EntityInterface;
 use MSBios\Resource\Doctrine\TimestampableAwareInterface;
 use Zend\Config\Config;
 use Zend\Form\FormInterface;
+use Zend\Hydrator\HydratorInterface;
 use Zend\Paginator\Paginator;
 use Zend\Stdlib\Parameters;
 use Zend\Stdlib\RequestInterface;
 use Zend\View\Model\ViewModel;
 
 /**
- * Class AbstractLazyActionController
+ * Class AbstractActionController
  * @package MSBios\CPanel\Doctrine\Mvc\Controller
  */
-abstract class AbstractLazyActionController extends DefaultAbstractLazyActionController implements
-    Initializer\DoctrineHydratorAwareInterface,
-    ObjectManagerAwareInterface
+abstract class AbstractActionController extends DefaultAbstractActionController implements
+    ObjectManagerAwareInterface,
+    FormElementManagerAwareInterface // todo: need move to cpanel
 {
+
+    use ObjectManagerAwareTrait;
+    use FormElementManagerAwareTrait;
+
     /** @const EVENT_PERSIST_OBJECT */
     const EVENT_PERSIST_OBJECT = 'persist.object';
 
@@ -41,8 +48,26 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
     /** @const EVENT_REMOVE_OBJECT */
     const EVENT_REMOVE_OBJECT = 'remove.object';
 
-    use Initializer\DoctrineHydratorAwareTrait;
-    use ObjectManagerAwareTrait;
+    /** @var EntityInterface */
+    protected $objectPrototype;
+
+    /**
+     * @return EntityInterface
+     */
+    public function getObjectPrototype(): EntityInterface
+    {
+        return $this->objectPrototype;
+    }
+
+    /**
+     * @param EntityInterface $objectPrototype
+     * @return $this
+     */
+    public function setObjectPrototype(EntityInterface $objectPrototype)
+    {
+        $this->objectPrototype = $objectPrototype;
+        return $this;
+    }
 
     /**
      * @param string $alias
@@ -104,7 +129,7 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
         }
 
         /** @var FormInterface $form */
-        $form = $this->getForm();
+        $form = $this->getFormElementManager()->get(get_called_class());
 
         /** @var RequestInterface $request */
         $request = $this->getRequest();
@@ -123,11 +148,13 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
                 /** @var EntityInterface $entity */
                 $entity = $form->getData();
 
+                /** @var ObjectManager $dem */
+                $dem = $this->getObjectManager();
+
                 if (! $entity instanceof EntityInterface) {
                     /** @var EntityInterface $entity */
-                    $entity = (new DoctrineObject($this->getEntityManager()))->hydrate(
-                        $entity,
-                        $this->getObjectPrototype()
+                    $entity = (new DoctrineObject($dem))->hydrate(
+                        $entity, $this->getObjectPrototype()
                     );
                 }
 
@@ -154,8 +181,8 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
                     ['entity' => $entity, 'data' => $parameters]
                 );
 
-                $this->getEntityManager()->persist($entity);
-                $this->getEntityManager()->flush();
+                $dem->persist($entity);
+                $dem->flush();
 
                 $this->flashMessenger()
                     ->addSuccessMessage('Entity has been create');
@@ -173,8 +200,7 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
         }
 
         $form->setAttribute(
-            'action',
-            $this->url()->fromRoute($matchedRouteName, ['action' => 'add'])
+            'action', $this->url()->fromRoute($matchedRouteName, ['action' => 'add'])
         );
 
         return new ViewModel([
@@ -194,11 +220,11 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
         /** @var int $id */
         $id = (int)$this->params()->fromRoute('id', 0);
 
+        /** @var ObjectManager $dem */
+        $dem = $this->getObjectManager();
+
         /** @var Object $object */
-        $object = $this->getEntityManager()->find(
-            get_class($this->getObjectPrototype()),
-            $id
-        );
+        $object = $dem->find(get_class($this->getObjectPrototype()), $id);
 
         /** @var string $matchedRouteName */
         $matchedRouteName = $this->getEvent()
@@ -212,12 +238,13 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
         }
 
         /** @var FormInterface $form */
-        $form = $this->getForm();
+        $form = $this->getFormElementManager()->get(get_called_class());
+
+        /** @var HydratorInterface $doh */
+        $doh = new DoctrineObject($dem);
 
         if (! $form->getHydrator() instanceof DoctrineObject) {
-            $form->setData(
-                (new DoctrineObject($this->getEntityManager()))->extract($object)
-            );
+            $form->setData($doh->extract($object));
         } else {
             $form->bind(clone $object);
         }
@@ -237,12 +264,8 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
                 $entity = $form->getData();
 
                 if (! $entity instanceof EntityInterface) {
-
                     /** @var EntityInterface $entity */
-                    $entity = (new DoctrineObject($this->getEntityManager()))->hydrate(
-                        $entity,
-                        $object
-                    );
+                    $entity = $doh->hydrate($entity, $object);
                 }
 
                 // TODO: Move to event listeners
@@ -265,8 +288,8 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
                     ['object' => $object, 'entity' => $entity, 'data' => $parameters]
                 );
 
-                $this->getEntityManager()->merge($entity);
-                $this->getEntityManager()->flush();
+                $dem->merge($entity);
+                $dem->flush();
 
                 $this->flashMessenger()
                     ->addSuccessMessage('Entity has been update');
@@ -287,8 +310,7 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
         }
 
         $form->setAttribute(
-            'action',
-            $this->url()->fromRoute($matchedRouteName, ['action' => 'edit', 'id' => $id])
+            'action', $this->url()->fromRoute($matchedRouteName, ['action' => 'edit', 'id' => $id])
         );
 
         return new ViewModel([
@@ -306,8 +328,11 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
      */
     public function dropAction()
     {
+        /** @var ObjectManager $dem */
+        $dem = $this->getObjectManager();
+
         /** @var EntityInterface $object */
-        $object = $this->entityManager->find(
+        $object = $dem->find(
             get_class($this->getObjectPrototype()),
             $this->params()->fromRoute('id', 0)
         );
@@ -316,13 +341,11 @@ abstract class AbstractLazyActionController extends DefaultAbstractLazyActionCon
         if ($object) {
             // fire event
             $this->getEventManager()->trigger(
-                self::EVENT_REMOVE_OBJECT,
-                $this,
-                ['object' => $object]
+                self::EVENT_REMOVE_OBJECT, $this, ['object' => $object]
             );
 
-            $this->getEntityManager()->remove($object);
-            $this->getEntityManager()->flush();
+            $dem->remove($object);
+            $dem->flush();
 
             $this->flashMessenger()
                 ->addSuccessMessage('Entity has been removed');

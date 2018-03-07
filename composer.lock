@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d983f773b5964fb110ab6ee33fe060bc",
+    "content-hash": "ae7c212648caf6f66ff022b63df03fa7",
     "packages": [],
     "packages-dev": [
         {
@@ -1693,19 +1693,20 @@
         },
         {
             "name": "msbios/cpanel",
-            "version": "v1.0.20",
+            "version": "v1.0.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/msbios/msbios-cpanel.git",
-                "reference": "72c00a81df23f03348f70a700421c24d2fc41e6e"
+                "reference": "5488af90cea7a7949e2777869eb75d3d6bd3c4cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/msbios/msbios-cpanel/zipball/72c00a81df23f03348f70a700421c24d2fc41e6e",
-                "reference": "72c00a81df23f03348f70a700421c24d2fc41e6e",
+                "url": "https://api.github.com/repos/msbios/msbios-cpanel/zipball/5488af90cea7a7949e2777869eb75d3d6bd3c4cd",
+                "reference": "5488af90cea7a7949e2777869eb75d3d6bd3c4cd",
                 "shasum": ""
             },
             "require": {
+                "msbios/hydrator": "^1.0",
                 "msbios/view": "^1.0",
                 "zendframework/zend-mvc-plugin-flashmessenger": "^1.0",
                 "zendframework/zend-mvc-plugins": "^1.0"
@@ -1733,7 +1734,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL"
+                "MIT"
             ],
             "authors": [
                 {
@@ -1746,7 +1747,7 @@
             "keywords": [
                 "php"
             ],
-            "time": "2017-12-07T10:25:31+00:00"
+            "time": "2018-03-07T11:54:18+00:00"
         },
         {
             "name": "msbios/db",
@@ -2158,6 +2159,62 @@
             "time": "2017-11-26T21:20:02+00:00"
         },
         {
+            "name": "msbios/guard-doctrine",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/msbios/msbios-guard-doctrine.git",
+                "reference": "9610c7c9b48da7f06c4b793d538374368618bf9f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/msbios/msbios-guard-doctrine/zipball/9610c7c9b48da7f06c4b793d538374368618bf9f",
+                "reference": "9610c7c9b48da7f06c4b793d538374368618bf9f",
+                "shasum": ""
+            },
+            "require": {
+                "msbios/guard": "^1.0",
+                "msbios/guard-resource-doctrine": "^1.0"
+            },
+            "require-dev": {
+                "msbios/application": "^1.0",
+                "msbios/authentication": "^1.0",
+                "msbios/authentication-doctrine": "^1.0",
+                "msbios/debug": "^1.0",
+                "msbios/doctrine": "^1.0",
+                "msbios/resource": "^1.0",
+                "msbios/resource-doctrine": "^1.0",
+                "msbios/test": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "zf": {
+                    "component": "MSBios\\Guard\\Doctrine"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MSBios\\Guard\\Doctrine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Judzhin Miles",
+                    "email": "info@msbios.com"
+                }
+            ],
+            "description": "MSBios Guard Doctrine",
+            "homepage": "https://github.com/msbios/msbios-guard-doctrine",
+            "keywords": [
+                "php"
+            ],
+            "time": "2018-02-28T14:17:43+00:00"
+        },
+        {
             "name": "msbios/guard-resource",
             "version": "v1.0.20",
             "source": {
@@ -2261,6 +2318,56 @@
                 "php"
             ],
             "time": "2018-03-03T10:34:00+00:00"
+        },
+        {
+            "name": "msbios/hydrator",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/msbios/msbios-hydrator.git",
+                "reference": "ed10f6043efc4df2a50c48d0c7915bb2d1b8f3d4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/msbios/msbios-hydrator/zipball/ed10f6043efc4df2a50c48d0c7915bb2d1b8f3d4",
+                "reference": "ed10f6043efc4df2a50c48d0c7915bb2d1b8f3d4",
+                "shasum": ""
+            },
+            "require": {
+                "zendframework/zend-hydrator": "^2.3"
+            },
+            "require-dev": {
+                "msbios/application": "^1.0",
+                "msbios/debug": "^1.0",
+                "msbios/test": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "zf": {
+                    "component": "MSBios\\Hydrator"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MSBios\\Hydrator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Judzhin Miles",
+                    "email": "info@msbios.com"
+                }
+            ],
+            "description": "MSBios Hydrator",
+            "homepage": "https://github.com/msbios/msbios-hydrator",
+            "keywords": [
+                "php"
+            ],
+            "time": "2018-03-07T11:08:59+00:00"
         },
         {
             "name": "msbios/i18n",
@@ -2377,16 +2484,16 @@
         },
         {
             "name": "msbios/msbios",
-            "version": "v1.0.5",
+            "version": "v1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/msbios/msbios-msbios.git",
-                "reference": "1611733d94fd9e05a852207296ea5595b66f2ab3"
+                "reference": "3db910564d610ee2a0a737cbc94089bc933ef759"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/msbios/msbios-msbios/zipball/1611733d94fd9e05a852207296ea5595b66f2ab3",
-                "reference": "1611733d94fd9e05a852207296ea5595b66f2ab3",
+                "url": "https://api.github.com/repos/msbios/msbios-msbios/zipball/3db910564d610ee2a0a737cbc94089bc933ef759",
+                "reference": "3db910564d610ee2a0a737cbc94089bc933ef759",
                 "shasum": ""
             },
             "require": {
@@ -2420,7 +2527,7 @@
             "keywords": [
                 "php"
             ],
-            "time": "2018-02-27T08:36:56+00:00"
+            "time": "2018-03-07T10:56:01+00:00"
         },
         {
             "name": "msbios/navigation",

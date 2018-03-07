@@ -6,6 +6,7 @@
 namespace MSBios\CPanel\Doctrine\Controller;
 
 use MSBios\CPanel\Controller\LayoutController as DefaultLayoutController;
+use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractActionController;
 use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
 use MSBios\Resource\Doctrine\Entity\Layout;
 
@@ -13,7 +14,7 @@ use MSBios\Resource\Doctrine\Entity\Layout;
  * Class LayoutController
  * @package MSBios\CPanel\Doctrine\Controller
  */
-class LayoutController extends AbstractLazyActionController
+class LayoutController extends AbstractActionController // AbstractLazyActionController
 {
     /**
      * LayoutController constructor.

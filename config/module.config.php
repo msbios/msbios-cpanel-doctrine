@@ -6,6 +6,7 @@
 
 namespace MSBios\CPanel\Doctrine;
 
+use MSBios\Form\Initializer\FormElementManagerInitializer;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
@@ -44,7 +45,10 @@ return [
                 Controller\ThemeController::class
         ],
         'initializers' => [
-            new Initializer\LazyControllerInitializer
+            Initializer\LazyControllerInitializer::class =>
+                new Initializer\LazyControllerInitializer, // todo remove in future
+            FormElementManagerInitializer::class =>
+                new FormElementManagerInitializer
         ],
     ],
 

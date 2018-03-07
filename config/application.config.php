@@ -8,7 +8,8 @@
 return [
     // Retrieve list of modules used in this application.
     'modules' => [
-
+        'MSBios\Hydrator',
+        'MSBios\Guard\Doctrine',
         'Zend\Db',
         'Zend\Cache',
         'Zend\Paginator',
