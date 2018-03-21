@@ -96,11 +96,9 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
             )
         ))->setItemCountPerPage(self::DEFAULT_ITEM_COUNT_PER_PAGE);
 
-        /** @var int $page */
-        $page = (int)$this->params()->fromQuery('page');
-        if ($page) {
-            $paginator->setCurrentPageNumber($page);
-        }
+        $paginator->setCurrentPageNumber(
+            (int)$this->params()->fromQuery('page', 1)
+        );
 
         return new ViewModel([
             'paginator' => $paginator,
