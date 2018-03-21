@@ -24,13 +24,7 @@
     }
   },
   "require-dev": {
-    "msbios/application": "^1.0",
-    "msbios/resource": "^1.0",
-    "msbios/authentication": "^1.0",
-    "msbios/guard": "^1.0",
-    "msbios/guard-resource": "^1.0",
-    "msbios/guard-cpanel": "^1.0",
-    "msbios/cpanel": "^1.0",
+    "msbios/portal": "^1.0",
     "msbios/doctrine": "^1.0",
     "msbios/resource-doctrine": "^1.0",
     "msbios/authentication-doctrine": "^1.0",
@@ -54,8 +48,7 @@
       "cd public && ln -s ../vendor/msbios/cpanel/themes/limitless/public/ limitless",
       "cd public && ln -s ../vendor/msbios/application/themes/default/public/ default"
     ],
-    "serve": "php -S 0.0.0.0:3107 -t public public/index.php",
-    "serve-ios": "php -S 0.0.0.0:3107 -t public index.php",
+    "serve": "php -S 0.0.0.0:3107 -t public index.php",
     "commit": "git add . && git commit -a -m \"Lazy Composer Commiter\" && git push"
   },
   "extra": {
