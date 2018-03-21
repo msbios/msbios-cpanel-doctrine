@@ -22,6 +22,7 @@ use MSBios\Hydrator\HydratorManagerAwareTrait;
 use MSBios\Resource\Doctrine\EntityInterface;
 use MSBios\Resource\Doctrine\TimestampableAwareInterface;
 use Zend\Config\Config;
+use Zend\EventManager\EventManagerInterface;
 use Zend\Form\FormInterface;
 use Zend\Hydrator\HydratorInterface;
 use Zend\Paginator\Paginator;
@@ -141,6 +142,9 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
             $parameters = $request->getPost();
             $form->setData($parameters);
 
+            /** @var EventManagerInterface $eventManager */
+            $eventManager = $this->getEventManager();
+
             if ($form->isValid()) {
 
                 /** @var EntityInterface $entity */
@@ -176,11 +180,9 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
                 // TODO: Move to event listeners
 
                 // fire event
-                $this->getEventManager()->trigger(
-                    self::EVENT_PERSIST_OBJECT,
-                    $this,
-                    ['entity' => $entity, 'data' => $parameters]
-                );
+                $eventManager->trigger(self::EVENT_PERSIST_OBJECT, $this, [
+                    'entity' => $entity, 'data' => $parameters
+                ]);
 
                 $dem->persist($entity);
                 $dem->flush();
@@ -190,13 +192,9 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
 
                 return $this->redirect()->toRoute($matchedRouteName);
             } else {
-                $this->getEventManager()->trigger(
-                    self::EVENT_VALIDATE_ERROR,
-                    $this,
-                    [
-                        'messages' => $form->getMessages()
-                    ]
-                );
+                $eventManager->trigger(self::EVENT_VALIDATE_ERROR, $this, [
+                    'messages' => $form->getMessages()
+                ]);
             }
         }
 
@@ -260,6 +258,9 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
             $parameters = $request->getPost();
             $form->setData($parameters);
 
+            /** @var EventManagerInterface $eventManager */
+            $eventManager = $this->getEventManager();
+
             if ($form->isValid()) {
 
                 /** @var EntityInterface $entity */
@@ -270,9 +271,8 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
                     $entity = $doh->hydrate($entity, $object);
                 }
 
-                // TODO: Move to event listeners
-
                 if ($entity instanceof TimestampableAwareInterface) {
+                    // TODO: Move to event listeners
                     $entity->setModifiedAt(new \DateTime('now'));
                 }
 
@@ -281,14 +281,9 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
                     $entity->setEditor($this->identity());
                 }
 
-                // TODO: Move to event listeners
-
-                // fire event
-                $this->getEventManager()->trigger(
-                    self::EVENT_MERGE_OBJECT,
-                    $this,
-                    ['object' => $object, 'entity' => $entity, 'data' => $parameters]
-                );
+                $eventManager->trigger(self::EVENT_MERGE_OBJECT, $this, [
+                    'object' => $object, 'entity' => $entity, 'data' => $parameters
+                ]);
 
                 $dem->merge($entity);
                 $dem->flush();
@@ -300,14 +295,9 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
                     $matchedRouteName
                 );
             } else {
-                $this->getEventManager()->trigger(
-                    self::EVENT_VALIDATE_ERROR,
-                    $this,
-                    [
-                        'object' => $object,
-                        'messages' => $form->getMessages()
-                    ]
-                );
+                $eventManager->trigger(self::EVENT_VALIDATE_ERROR, $this, [
+                    'object' => $object, 'messages' => $form->getMessages()
+                ]);
             }
         }
 
@@ -342,12 +332,9 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
 
         /** @var int $id */
         if ($object) {
-            // fire event
-            $this->getEventManager()->trigger(
-                self::EVENT_REMOVE_OBJECT,
-                $this,
-                ['object' => $object]
-            );
+            $this->getEventManager()->trigger(self::EVENT_REMOVE_OBJECT, $this, [
+                'object' => $object
+            ]);
 
             $dem->remove($object);
             $dem->flush();
