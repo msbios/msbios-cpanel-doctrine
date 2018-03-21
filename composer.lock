@@ -1803,16 +1803,16 @@
         },
         {
             "name": "msbios/cpanel",
-            "version": "v1.0.30",
+            "version": "v1.0.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/msbios/msbios-cpanel.git",
-                "reference": "5c1ded3f9103ccd1dbea6734028ab513ad86d852"
+                "reference": "cf02d93a9921337f02796da5a3bd287b3863e5ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/msbios/msbios-cpanel/zipball/5c1ded3f9103ccd1dbea6734028ab513ad86d852",
-                "reference": "5c1ded3f9103ccd1dbea6734028ab513ad86d852",
+                "url": "https://api.github.com/repos/msbios/msbios-cpanel/zipball/cf02d93a9921337f02796da5a3bd287b3863e5ec",
+                "reference": "cf02d93a9921337f02796da5a3bd287b3863e5ec",
                 "shasum": ""
             },
             "require": {
@@ -1857,7 +1857,7 @@
             "keywords": [
                 "php"
             ],
-            "time": "2018-03-21T12:31:07+00:00"
+            "time": "2018-03-21T14:03:07+00:00"
         },
         {
             "name": "msbios/db",
@@ -2222,22 +2222,34 @@
         },
         {
             "name": "msbios/guard-cpanel-doctrine",
-            "version": "v1.0.11",
+            "version": "v1.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/msbios/msbios-guard-cpanel-doctrine.git",
-                "reference": "96f22142da74ea0a72cffd02354dbad2ff8a3fd6"
+                "reference": "715f8f1c2264cc2fa4a033eddc01966d04231954"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/msbios/msbios-guard-cpanel-doctrine/zipball/96f22142da74ea0a72cffd02354dbad2ff8a3fd6",
-                "reference": "96f22142da74ea0a72cffd02354dbad2ff8a3fd6",
+                "url": "https://api.github.com/repos/msbios/msbios-guard-cpanel-doctrine/zipball/715f8f1c2264cc2fa4a033eddc01966d04231954",
+                "reference": "715f8f1c2264cc2fa4a033eddc01966d04231954",
                 "shasum": ""
+            },
+            "require": {
+                "zendframework/zend-crypt": "^3.2"
             },
             "require-dev": {
                 "msbios/application": "~1.0",
+                "msbios/authentication": "^1.0",
+                "msbios/authentication-doctrine": "^1.0",
+                "msbios/cpanel": "^1.0",
                 "msbios/cpanel-doctrine": "^1.0",
                 "msbios/debug": "^1.0",
+                "msbios/guard": "^1.0",
+                "msbios/guard-cpanel": "^1.0",
+                "msbios/guard-doctrine": "^1.0",
+                "msbios/guard-resource-doctrine": "^1.0",
+                "msbios/resource": "^1.0",
+                "msbios/resource-doctrine": "^1.0",
                 "msbios/test": "^1.0"
             },
             "type": "library",
@@ -2253,7 +2265,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL"
+                "MIT"
             ],
             "authors": [
                 {
@@ -2266,7 +2278,7 @@
             "keywords": [
                 "php"
             ],
-            "time": "2017-11-26T21:20:02+00:00"
+            "time": "2018-03-21T13:30:42+00:00"
         },
         {
             "name": "msbios/guard-doctrine",
