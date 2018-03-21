@@ -268,7 +268,7 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
 
                 if (! $entity instanceof EntityInterface) {
                     /** @var EntityInterface $entity */
-                    $entity = $doh->hydrate($entity, $object);
+                    $entity = $doh->hydrate($entity, clone $object);
                 }
 
                 if ($entity instanceof TimestampableAwareInterface) {
