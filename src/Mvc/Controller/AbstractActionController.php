@@ -7,25 +7,25 @@
 namespace MSBios\CPanel\Doctrine\Mvc\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
-use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
-use MSBios\CPanel\Mvc\Controller\AbstractActionController as DefaultAbstractActionController;
+use MSBios\CPanel\Mvc\Controller\AbstractActionController as SimpleAbstractActionController;
+use MSBios\CPanel\Mvc\Controller\ActionControllerInterface;
 use MSBios\Doctrine\ObjectManagerAwareTrait;
-use MSBios\Form\FormElementManagerAwareInterface;
-use MSBios\Form\FormElementManagerAwareTrait;
+use MSBios\Guard\GuardInterface;
 use MSBios\Guard\Resource\Doctrine\BlameableAwareInterface;
-use MSBios\Hydrator\HydratorManagerAwareInterface;
-use MSBios\Hydrator\HydratorManagerAwareTrait;
+use MSBios\Resource\Doctrine\Entity\Layout;
 use MSBios\Resource\Doctrine\EntityInterface;
 use MSBios\Resource\Doctrine\TimestampableAwareInterface;
 use Zend\Config\Config;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Form\FormInterface;
 use Zend\Hydrator\HydratorInterface;
+use Zend\Mvc\Controller\AbstractActionController as DefaultAbstractActionController;
+use Zend\Mvc\Controller\Plugin\Params;
 use Zend\Paginator\Paginator;
+use Zend\Permissions\Acl\Resource\ResourceInterface;
+use Zend\Stdlib\ArrayUtils;
 use Zend\Stdlib\Parameters;
 use Zend\Stdlib\RequestInterface;
 use Zend\View\Model\ViewModel;
@@ -35,13 +35,10 @@ use Zend\View\Model\ViewModel;
  * @package MSBios\CPanel\Doctrine\Mvc\Controller
  */
 abstract class AbstractActionController extends DefaultAbstractActionController implements
-    ObjectManagerAwareInterface,
-    FormElementManagerAwareInterface, // todo: need move to cpanel
-    HydratorManagerAwareInterface
+    ActionControllerInterface,
+    GuardInterface,
+    ResourceInterface
 {
-    use ObjectManagerAwareTrait;
-    use FormElementManagerAwareTrait;
-    use HydratorManagerAwareTrait;
 
     /** @const EVENT_PERSIST_OBJECT */
     const EVENT_PERSIST_OBJECT = 'persist.object';
@@ -52,63 +49,91 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
     /** @const EVENT_REMOVE_OBJECT */
     const EVENT_REMOVE_OBJECT = 'remove.object';
 
-    /** @var EntityInterface */
-    protected $objectPrototype;
+    use ObjectManagerAwareTrait;
+
+    /** @var FormInterface */
+    protected $form;
 
     /**
-     * @return EntityInterface
+     * AbstractActionController constructor.
+     * @param ObjectManager $dem
+     * @param FormInterface $form
      */
-    public function getObjectPrototype(): EntityInterface
+    public function __construct(ObjectManager $dem, FormInterface $form)
     {
-        return $this->objectPrototype;
+        $this->setObjectManager($dem);
+        $this->form = $form;
     }
 
     /**
-     * @param EntityInterface $objectPrototype
-     * @return $this
+     * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    public function setObjectPrototype(EntityInterface $objectPrototype)
+    protected function getRepository()
     {
-        $this->objectPrototype = $objectPrototype;
-        return $this;
+        return $this->getObjectManager()
+            ->getRepository(Layout::class);
     }
 
     /**
-     * @param string $alias
-     * @return QueryBuilder
+     * @return string
      */
-    protected function getQueryBuilder($alias = 'resource')
+    protected function getMatchedRouteName()
     {
-        /** @var QueryBuilder $queryBuilder */
-        return $this->getObjectManager()->getRepository(
-            get_class($this->getObjectPrototype())
-        )->createQueryBuilder($alias);
+        return $this
+            ->getEvent()
+            ->getRouteMatch()
+            ->getMatchedRouteName();
     }
 
     /**
+     * @param array $variables
      * @return ViewModel
+     */
+    protected function createViewModel(array $variables = [])
+    {
+        return new ViewModel(ArrayUtils::merge([
+            'form' => $this->form,
+            'matchedRouteName' => $this->getMatchedRouteName(),
+            'resourceId' => $this->getResourceId()
+        ], $variables));
+    }
+
+    /**
+     * @return mixed
      */
     public function indexAction()
     {
-        /** @var Paginator $paginator */
-        $paginator = (new Paginator(
-            new DoctrineAdapter(
-                new ORMPaginator($this->getQueryBuilder())
-            )
-        ))->setItemCountPerPage(self::DEFAULT_ITEM_COUNT_PER_PAGE);
+        /** @var Params $params */
+        $params = $this->params();
 
-        $paginator->setCurrentPageNumber(
-            (int)$this->params()->fromQuery('page', 1)
+        /** @var string $matchedRouteName */
+        $matchedRouteName = $this->getMatchedRouteName();
+
+        /** @var FormInterface $form */
+        $form = $this->form;
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute($matchedRouteName, ['action' => 'add'])
         );
 
-        return new ViewModel([
+        /** @var ObjectRepository $repository */
+        $repository = $this->getRepository();
+
+        /** @var Paginator $paginator */
+        $paginator = $repository
+            ->fetchAll();
+
+        $paginator
+            ->setItemCountPerPage(
+                (int)$params->fromQuery('limit', SimpleAbstractActionController::DEFAULT_ITEM_COUNT_PER_PAGE)
+            )
+            ->setCurrentPageNumber(
+                (int)$params->fromQuery('page', SimpleAbstractActionController::DEFAULT_CURRENT_PAGE_NUMBER)
+            );
+
+        return $this->createViewModel([
             'paginator' => $paginator,
-            'config' => new Config([
-                'resource' => $this->getResourceId(),
-                'route_name' => $this->getEvent()
-                    ->getRouteMatch()
-                    ->getMatchedRouteName()
-            ])
+            'form' => $form
         ]);
     }
 
@@ -153,7 +178,7 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
                 /** @var ObjectManager $dem */
                 $dem = $this->getObjectManager();
 
-                if (! $entity instanceof EntityInterface) {
+                if (!$entity instanceof EntityInterface) {
 
                     /** @var HydratorInterface $doh */
                     $doh = $this->getHydratorManager()
@@ -231,7 +256,7 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
             ->getRouteMatch()
             ->getMatchedRouteName();
 
-        if (! $object) {
+        if (!$object) {
             return $this->redirect()->toRoute(
                 $matchedRouteName
             );
@@ -243,7 +268,7 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
         /** @var HydratorInterface $doh */
         $doh = $this->getHydratorManager()->get(DoctrineObject::class);
 
-        if (! $form->getHydrator() instanceof DoctrineObject) {
+        if (!$form->getHydrator() instanceof DoctrineObject) {
             $form->setData($doh->extract($object));
         } else {
             $form->bind(clone $object);
@@ -266,7 +291,7 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
                 /** @var EntityInterface $entity */
                 $entity = $form->getData();
 
-                if (! $entity instanceof EntityInterface) {
+                if (!$entity instanceof EntityInterface) {
                     /** @var EntityInterface $entity */
                     $entity = $doh->hydrate($entity, clone $object);
                 }

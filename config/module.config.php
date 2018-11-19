@@ -6,9 +6,6 @@
 
 namespace MSBios\CPanel\Doctrine;
 
-use MSBios\Doctrine\Initializer\ObjectManagerInitializer;
-use MSBios\Form\Initializer\FormElementManagerInitializer;
-use MSBios\Hydrator\Initializer\HydratorManagerInitializer;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
@@ -18,7 +15,7 @@ return [
             Controller\IndexController::class =>
                 Factory\IndexControllerFactory::class,
             Controller\LayoutController::class =>
-                InvokableFactory::class,
+                Factory\ControllerFactory::class,
             Controller\ModuleController::class =>
                 InvokableFactory::class,
             Controller\PageTypeController::class =>
@@ -47,14 +44,14 @@ return [
                 Controller\ThemeController::class
         ],
         'initializers' => [
-            Initializer\LazyControllerInitializer::class =>
-                new Initializer\LazyControllerInitializer, // todo remove in future
-            ObjectManagerInitializer::class =>
-                new ObjectManagerInitializer,
-            FormElementManagerInitializer::class =>
-                new FormElementManagerInitializer,
-            HydratorManagerInitializer::class =>
-                new HydratorManagerInitializer
+            //Initializer\LazyControllerInitializer::class =>
+            //    new Initializer\LazyControllerInitializer, // todo remove in future
+            //ObjectManagerInitializer::class =>
+            //    new ObjectManagerInitializer,
+            //FormElementManagerInitializer::class =>
+            //    new FormElementManagerInitializer,
+            //HydratorManagerInitializer::class =>
+            //    new HydratorManagerInitializer
         ],
     ],
 
