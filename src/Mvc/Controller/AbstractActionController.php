@@ -178,7 +178,7 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
                 /** @var ObjectManager $dem */
                 $dem = $this->getObjectManager();
 
-                if (!$entity instanceof EntityInterface) {
+                if (! $entity instanceof EntityInterface) {
 
                     /** @var HydratorInterface $doh */
                     $doh = $this->getHydratorManager()
@@ -256,7 +256,7 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
             ->getRouteMatch()
             ->getMatchedRouteName();
 
-        if (!$object) {
+        if (! $object) {
             return $this->redirect()->toRoute(
                 $matchedRouteName
             );
@@ -268,7 +268,7 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
         /** @var HydratorInterface $doh */
         $doh = $this->getHydratorManager()->get(DoctrineObject::class);
 
-        if (!$form->getHydrator() instanceof DoctrineObject) {
+        if (! $form->getHydrator() instanceof DoctrineObject) {
             $form->setData($doh->extract($object));
         } else {
             $form->bind(clone $object);
@@ -291,7 +291,7 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
                 /** @var EntityInterface $entity */
                 $entity = $form->getData();
 
-                if (!$entity instanceof EntityInterface) {
+                if (! $entity instanceof EntityInterface) {
                     /** @var EntityInterface $entity */
                     $entity = $doh->hydrate($entity, clone $object);
                 }
