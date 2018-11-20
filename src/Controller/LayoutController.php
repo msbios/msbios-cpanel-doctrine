@@ -6,6 +6,7 @@
 namespace MSBios\CPanel\Doctrine\Controller;
 
 use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractActionController;
+use MSBios\Resource\Doctrine\Entity\Layout;
 
 /**
  * Class LayoutController
@@ -13,6 +14,14 @@ use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractActionController;
  */
 class LayoutController extends AbstractActionController
 {
+    /**
+     * @return mixed
+     */
+    protected static function factory()
+    {
+        return new Layout;
+    }
+
     /**
      * Returns the string identifier of the Resource
      *

@@ -10,6 +10,16 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
 
+    'doctrine' => [
+        'eventmanager' => [
+            'orm_default' => [
+                'subscribers' => [
+                    Subscriber\TimestampableSubscriber::class
+                ],
+            ],
+        ],
+    ],
+
     'controllers' => [
         'factories' => [
             Controller\IndexController::class =>
