@@ -127,11 +127,9 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
             $this->url()->fromRoute($matchedRouteName, ['action' => 'add'])
         );
 
-        /** @var ObjectRepository $repository */
-        $repository = $this->getRepository();
-
         /** @var Paginator $paginator */
-        $paginator = $repository
+        $paginator = $this
+            ->getRepository()
             ->fetchAll();
 
         $paginator
@@ -207,8 +205,9 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
                     'entity' => $entity, 'data' => $parameters
                 ]);
 
-                $dem->persist($entity);
-                $dem->flush();
+                $this
+                    ->getRepository($entity)
+                    ->save();
 
                 $this
                     ->flashMessenger()
@@ -314,8 +313,9 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
                     'object' => $object, 'data' => $data, 'entity' => $values
                 ]);
 
-                $dem->merge($values);
-                $dem->flush();
+                $this
+                    ->getRepository()
+                    ->save($values);
 
                 $this->flashMessenger()
                     ->addSuccessMessage('Entity has been update');
