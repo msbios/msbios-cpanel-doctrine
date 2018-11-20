@@ -3083,16 +3083,16 @@
         },
         {
             "name": "msbios/resource-doctrine",
-            "version": "v1.0.32",
+            "version": "v1.0.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/msbios/msbios-resource-doctrine.git",
-                "reference": "5a6b6129c6c90b5633d97dc508624f6979a2d5b9"
+                "reference": "e7d1941b9e46034fdc01af82d8ed699a831e1154"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/msbios/msbios-resource-doctrine/zipball/5a6b6129c6c90b5633d97dc508624f6979a2d5b9",
-                "reference": "5a6b6129c6c90b5633d97dc508624f6979a2d5b9",
+                "url": "https://api.github.com/repos/msbios/msbios-resource-doctrine/zipball/e7d1941b9e46034fdc01af82d8ed699a831e1154",
+                "reference": "e7d1941b9e46034fdc01af82d8ed699a831e1154",
                 "shasum": ""
             },
             "require": {
@@ -3133,7 +3133,7 @@
             "keywords": [
                 "php"
             ],
-            "time": "2018-11-20T12:26:35+00:00"
+            "time": "2018-11-20T14:09:52+00:00"
         },
         {
             "name": "msbios/stdlib",

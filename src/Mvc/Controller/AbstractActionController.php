@@ -8,23 +8,22 @@ namespace MSBios\CPanel\Doctrine\Mvc\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\QueryBuilder;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use MSBios\CPanel\Mvc\Controller\AbstractActionController as SimpleAbstractActionController;
 use MSBios\CPanel\Mvc\Controller\ActionControllerInterface;
 use MSBios\Doctrine\ObjectManagerAwareTrait;
 use MSBios\Guard\GuardInterface;
 use MSBios\Guard\Resource\Doctrine\BlameableAwareInterface;
+use MSBios\Paginator\Doctrine\Adapter\QueryBuilderPaginator;
 use MSBios\Resource\Doctrine\EntityInterface;
 use MSBios\Resource\Doctrine\TimestampableAwareInterface;
-use Zend\Config\Config;
-use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Form\FormInterface;
 use Zend\Hydrator\HydratorInterface;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\Mvc\Controller\AbstractActionController as DefaultAbstractActionController;
 use Zend\Mvc\Controller\Plugin\Params;
-use Zend\Mvc\MvcEvent;
 use Zend\Paginator\Paginator;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 use Zend\Stdlib\ArrayUtils;
@@ -130,7 +129,7 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
         /** @var Paginator $paginator */
         $paginator = $this
             ->getRepository()
-            ->fetchAll();
+            ->fetchAll($this);
 
         $paginator
             ->setItemCountPerPage(
