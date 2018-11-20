@@ -8,14 +8,12 @@ namespace MSBios\CPanel\Doctrine\Mvc\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ORM\QueryBuilder;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use MSBios\CPanel\Mvc\Controller\AbstractActionController as SimpleAbstractActionController;
 use MSBios\CPanel\Mvc\Controller\ActionControllerInterface;
 use MSBios\Doctrine\ObjectManagerAwareTrait;
 use MSBios\Guard\GuardInterface;
 use MSBios\Guard\Resource\Doctrine\BlameableAwareInterface;
-use MSBios\Paginator\Doctrine\Adapter\QueryBuilderPaginator;
 use MSBios\Resource\Doctrine\EntityInterface;
 use MSBios\Resource\Doctrine\TimestampableAwareInterface;
 use Zend\EventManager\EventManagerInterface;
@@ -27,8 +25,6 @@ use Zend\Mvc\Controller\Plugin\Params;
 use Zend\Paginator\Paginator;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 use Zend\Stdlib\ArrayUtils;
-use Zend\Stdlib\Parameters;
-use Zend\Stdlib\RequestInterface;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -153,60 +149,52 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
         /** @var string $matchedRouteName */
         $matchedRouteName = $this->getMatchedRouteName();
 
-        /** @var int $id */
-        if ($id = $this->params()->fromRoute('id')) {
-            return $this->redirect()->toRoute($matchedRouteName, ['action' => 'add']);
-        }
-
         /** @var FormInterface $form */
         $form = $this->form;
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute($matchedRouteName, ['action' => 'add'])
+        );
 
-        /** @var RequestInterface $request */
-        $request = $this->getRequest();
+        if ($this->getRequest()->isPost()) {
 
-        if ($request->isPost()) {
+            /** @var array $argv */
+            $argv = ['object' => static::factory()];
+
             if ($form->getHydrator() instanceof DoctrineObject) {
-                $form->setObject(static::factory());
+                $form->setObject($argv['object']);
             }
 
-            /** @var Parameters $parameters */
-            $parameters = $request->getPost();
-            $form->setData($parameters);
+            $argv['data'] = $this->params()->fromPost();
+            $form->setData($argv['data']);
 
             /** @var EventManagerInterface $eventManager */
             $eventManager = $this->getEventManager();
 
             if ($form->isValid()) {
-
-                /** @var EntityInterface $entity */
-                $entity = $form->getData();
+                $argv['entity'] = $form->getData();
 
                 /** @var ObjectManager $dem */
                 $dem = $this->getObjectManager();
 
-                if (! $entity instanceof EntityInterface) {
-
-                    /** @var HydratorInterface $doh */
-                    $doh = new DoctrineObject($dem);
-
+                if (! $argv['entity'] instanceof EntityInterface) {
                     /** @var EntityInterface $entity */
-                    $entity = $doh->hydrate($entity, static::factory());
+                    $argv['entity'] = (new DoctrineObject($dem))
+                        ->hydrate($argv['entity'], static::factory());
                 }
 
-                if ($entity instanceof BlameableAwareInterface) {
-                    $entity
+                if ($argv['entity'] instanceof BlameableAwareInterface) {
+                    $argv['entity']
                         ->setCreator($this->identity())
-                        ->setEditor($entity->getCreator());
+                        ->setEditor($argv['entity']->getCreator());
                 }
 
-                // fire event
-                $eventManager->trigger(self::EVENT_PERSIST_OBJECT, $this, [
-                    'entity' => $entity, 'data' => $parameters
-                ]);
+                $eventManager
+                    ->trigger(self::EVENT_PERSIST_OBJECT, $this, $argv);
 
                 $this
-                    ->getRepository($entity)
-                    ->save();
+                    ->getRepository()
+                    ->save($argv['entity']);
 
                 $this
                     ->flashMessenger()
@@ -220,11 +208,6 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
                 ]);
             }
         }
-
-        $form->setAttribute(
-            'action',
-            $this->url()->fromRoute($matchedRouteName, ['action' => 'add'])
-        );
 
         return $this->createViewModel();
     }
