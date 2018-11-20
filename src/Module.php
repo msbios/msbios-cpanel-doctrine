@@ -20,7 +20,7 @@ use Zend\Loader\StandardAutoloader;
 class Module implements ModuleInterface, ModuleAwareInterface, AutoloaderAwareInterface
 {
     /** @const VERSION */
-    const VERSION = '1.0.27';
+    const VERSION = '1.0.28';
 
     /**
      * @return mixed
