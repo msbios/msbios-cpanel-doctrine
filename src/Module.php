@@ -20,10 +20,12 @@ use Zend\Loader\StandardAutoloader;
 class Module implements ModuleInterface, ModuleAwareInterface, AutoloaderAwareInterface
 {
     /** @const VERSION */
-    const VERSION = '1.0.34';
+    const VERSION = '1.0.35';
 
     /**
-     * @return mixed
+     * @inheritdoc
+     *
+     * @return array|mixed|\Traversable
      */
     public function getConfig()
     {
@@ -31,7 +33,7 @@ class Module implements ModuleInterface, ModuleAwareInterface, AutoloaderAwareIn
     }
 
     /**
-     * Return an array for passing to Zend\Loader\AutoloaderFactory.
+     * @inheritdoc
      *
      * @return array
      */
@@ -46,13 +48,10 @@ class Module implements ModuleInterface, ModuleAwareInterface, AutoloaderAwareIn
         ];
     }
 
-
-
     /**
-     * Listen to the bootstrap event
+     * @inheritdoc
      *
      * @param EventInterface $e
-     * @return array
      */
     public function onBootstrap(EventInterface $e)
     {

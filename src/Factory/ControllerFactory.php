@@ -9,8 +9,6 @@ namespace MSBios\CPanel\Doctrine\Factory;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 use MSBios\CPanel\Exception\ServiceNotCreatedException;
-use MSBios\Db\TablePluginManager;
-use MSBios\Resource\RecordRepositoryInterface;
 use Zend\Form\FormElementManager\FormElementManagerV3Polyfill;
 use Zend\Form\FormInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -22,10 +20,12 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 class ControllerFactory implements FactoryInterface
 {
     /**
+     * @inheritdoc
+     *
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array|null $options
-     * @return mixed
+     * @return mixed|object
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {

@@ -8,10 +8,11 @@ namespace MSBios\CPanel\Doctrine\Mvc\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use DoctrineModule\Persistence\ProvidesObjectManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
+use MSBios\CPanel\Form\SearchForm;
 use MSBios\CPanel\Mvc\Controller\AbstractActionController as SimpleAbstractActionController;
 use MSBios\CPanel\Mvc\Controller\ActionControllerInterface;
-use MSBios\Doctrine\ObjectManagerAwareTrait;
 use MSBios\Guard\GuardInterface;
 use MSBios\Guard\Resource\Doctrine\BlameableAwareInterface;
 use MSBios\Resource\Doctrine\EntityInterface;
@@ -48,10 +49,22 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
     /** @const EVENT_VALIDATE_ERROR */
     const EVENT_VALIDATE_ERROR = 'validate.error';
 
-    use ObjectManagerAwareTrait;
+    /** @const ITEM_COUNT_PER_PAGE */
+    const ITEM_COUNT_PER_PAGE = SimpleAbstractActionController::DEFAULT_ITEM_COUNT_PER_PAGE;
+
+    /** @const CURRENT_PAGE_NUMBER */
+    const CURRENT_PAGE_NUMBER = SimpleAbstractActionController::DEFAULT_CURRENT_PAGE_NUMBER;
+
+    use ProvidesObjectManager;
 
     /** @var FormInterface */
     protected $form;
+
+    /** @var ObjectRepository */
+    protected $repository;
+
+    /** @var SearchForm */
+    protected $search;
 
     /**
      * @return mixed
@@ -74,10 +87,15 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
      */
     protected function getRepository()
     {
-        /** @var EntityInterface $entity */
-        $entity = static::factory();
-        return $this->getObjectManager()
-            ->getRepository(get_class($entity));
+        if (! $this->repository instanceof ObjectRepository) {
+            /** @var EntityInterface $entity */
+            $entity = static::factory();
+            $this->repository = $this
+                ->getObjectManager()
+                ->getRepository(get_class($entity));
+        }
+
+        return $this->repository;
     }
 
     /**
@@ -122,20 +140,21 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
             $this->url()->fromRoute($matchedRouteName, ['action' => 'add'])
         );
 
+        $this->search = (new SearchForm)
+            ->setAttribute('action', $this->url()->fromRoute($matchedRouteName))
+            ->setData($this->params()->fromQuery());
+
         /** @var Paginator $paginator */
         $paginator = $this
             ->getRepository()
             ->fetchAll($this);
 
         $paginator
-            ->setItemCountPerPage(
-                (int)$params->fromQuery('limit', SimpleAbstractActionController::DEFAULT_ITEM_COUNT_PER_PAGE)
-            )
-            ->setCurrentPageNumber(
-                (int)$params->fromQuery('page', SimpleAbstractActionController::DEFAULT_CURRENT_PAGE_NUMBER)
-            );
+            ->setItemCountPerPage((int)$params->fromQuery('limit', self::ITEM_COUNT_PER_PAGE))
+            ->setCurrentPageNumber((int)$params->fromQuery('page', self::CURRENT_PAGE_NUMBER));
 
         return $this->createViewModel([
+            'search' => $this->search,
             'paginator' => $paginator,
             'form' => $form
         ]);
