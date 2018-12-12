@@ -161,7 +161,7 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
             'form' => $form,
             'paginator' => $paginator,
             'total' => $repository
-                ->count(),
+                ->count([]),
 
         ]);
     }
