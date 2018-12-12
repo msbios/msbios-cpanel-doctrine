@@ -144,9 +144,12 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
             ->setAttribute('action', $this->url()->fromRoute($matchedRouteName))
             ->setData($this->params()->fromQuery());
 
+        /** @var ObjectRepository $repository */
+        $repository = $this
+            ->getRepository();
+
         /** @var Paginator $paginator */
-        $paginator = $this
-            ->getRepository()
+        $paginator = $repository
             ->fetchAll($this);
 
         $paginator
@@ -155,8 +158,11 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
 
         return $this->createViewModel([
             'search' => $this->search,
+            'form' => $form,
             'paginator' => $paginator,
-            'form' => $form
+            'total' => $repository
+                ->count(),
+
         ]);
     }
 
