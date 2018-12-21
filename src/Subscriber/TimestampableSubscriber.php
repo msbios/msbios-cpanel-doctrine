@@ -19,9 +19,9 @@ use MSBios\Resource\Doctrine\TimestampableAwareInterface;
 class TimestampableSubscriber implements EventSubscriber
 {
     /**
-     * Returns an array of events this subscriber wants to listen to.
+     * @inheritdoc
      *
-     * @return string[]
+     * @return array|string[]
      */
     public function getSubscribedEvents()
     {
@@ -32,6 +32,8 @@ class TimestampableSubscriber implements EventSubscriber
     }
 
     /**
+     * @inheritdoc
+     *
      * @param LifecycleEventArgs $args
      */
     public function prePersist(LifecycleEventArgs $args)
@@ -46,6 +48,8 @@ class TimestampableSubscriber implements EventSubscriber
     }
 
     /**
+     * @inheritdoc
+     *
      * @param LifecycleEventArgs $args
      */
     public function preUpdate(LifecycleEventArgs $args)

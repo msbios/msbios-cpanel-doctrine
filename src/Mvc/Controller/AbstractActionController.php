@@ -16,6 +16,7 @@ use MSBios\CPanel\Mvc\Controller\ActionControllerInterface;
 use MSBios\Guard\GuardInterface;
 use MSBios\Guard\Resource\Doctrine\BlameableAwareInterface;
 use MSBios\Resource\Doctrine\EntityInterface;
+use MSBios\Resource\Doctrine\EntityRepository;
 use MSBios\Resource\Doctrine\TimestampableAwareInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Form\FormInterface;
@@ -23,6 +24,7 @@ use Zend\Hydrator\HydratorInterface;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\Mvc\Controller\AbstractActionController as DefaultAbstractActionController;
 use Zend\Mvc\Controller\Plugin\Params;
+use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;
 use Zend\Permissions\Acl\Resource\ResourceInterface;
 use Zend\Stdlib\ArrayUtils;
@@ -37,6 +39,11 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
     GuardInterface,
     ResourceInterface
 {
+    /**
+     * {@inheritDoc}
+     */
+    protected $eventIdentifier = __CLASS__;
+
     /** @const EVENT_PERSIST_OBJECT */
     const EVENT_PERSIST_OBJECT = 'persist.object';
 
@@ -123,6 +130,21 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
     }
 
     /**
+     * @param ObjectRepository $repository
+     * @return Paginator
+     * @throws \Exception
+     */
+    public function createPaginator(ObjectRepository $repository)
+    {
+        if ($repository instanceof EntityRepository) {
+            return $repository
+                ->fetchAll($this);
+        }
+
+        return new Paginator(new ArrayAdapter($repository->findAll()));
+    }
+
+    /**
      * @return mixed
      */
     public function indexAction()
@@ -149,10 +171,8 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
             ->getRepository();
 
         /** @var Paginator $paginator */
-        $paginator = $repository
-            ->fetchAll($this);
-
-        $paginator
+        $paginator = $this
+            ->createPaginator($repository)
             ->setItemCountPerPage((int)$params->fromQuery('limit', self::ITEM_COUNT_PER_PAGE))
             ->setCurrentPageNumber((int)$params->fromQuery('page', self::CURRENT_PAGE_NUMBER));
 
@@ -162,7 +182,6 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
             'paginator' => $paginator,
             'total' => $repository
                 ->count([]),
-
         ]);
     }
 
