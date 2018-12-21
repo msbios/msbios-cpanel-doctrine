@@ -20,8 +20,8 @@ $this->headScript()
                 <h4><?= $this->translate('Information message'); ?></h4>
                 <p><?= $this->translate('The database is not created at the moment no layout, click "Create new theme" to start working with the theme.'); ?></p>
                 <p>
-                    <?php if ($this->isAllowed($this->config->get('resource'), 'add')): ?>
-                        <a href="<?= $this->url($this->config->get('route_name'), ['action' => 'add']); ?>"
+                    <?php if ($this->isAllowed($this->resourceId, 'add')): ?>
+                        <a href="<?= $this->url($this->matchedRouteName, ['action' => 'add']); ?>"
                            class="btn btn-info"><?= $this->translate('Create new theme'); ?></a>
                     <?php endif; ?>
                 </p>
@@ -57,8 +57,8 @@ $this->headScript()
 
                             &nbsp;
 
-                            <?php if ($this->isAllowed($this->config->get('resource'), 'add')): ?>
-                                <a href="<?= $this->url($this->config->get('route_name'), ['action' => 'add']); ?>"
+                            <?php if ($this->isAllowed($this->resourceId, 'add')): ?>
+                                <a href="<?= $this->url($this->matchedRouteName, ['action' => 'add']); ?>"
                                    class="btn btn-success"><?= $this->translate('Create theme'); ?></a>
                             <?php endif; ?>
                         </div>
@@ -71,90 +71,24 @@ $this->headScript()
                         <thead>
                         <tr>
                             <th><?= $this->translate('Title'); ?></th>
-                            <th><?= $this->translate('Identifier'); ?></th>
-                            <th><?= $this->translate('Base URL'); ?></th>
-                            <th><?= $this->translate('SSL Base URL'); ?></th>
-                            <th><?= $this->translate('CDN URL'); ?></th>
-                            <th><?= $this->translate('SSL CDN URL'); ?></th>
-                            <th><?= $this->translate('Force SSL'); ?></th>
-                            <th><?= $this->translate('Locale'); ?></th>
-                            <th><?= $this->translate('Timezone'); ?></th>
-                            <th width="1px" class="text-center">
+                            <th><?= $this->translate('Template'); ?></th>
+                            <th width="100px" class="text-center">
                                 <?= $this->translate('Actions'); ?>
                             </th>
                         </tr>
                         </thead>
 
                         <tbody>
-                        <?php /** @var \MSBios\Resource\Entity\Setting $item */ ?>
+                        <?php /** @var \MSBios\Resource\Entity\Theme $item */ ?>
                         <?php foreach ($this->paginator as $item): ?>
                             <tr>
                                 <td><?= $this->escapeHtml($item->getTitle()); ?></td>
-                                <td><?= $this->escapeHtml($item->getIdentifier()); ?></td>
-                                <td><?= $this->escapeHtml($item->getBaseUrl()); ?></td>
-                                <td><?= $this->escapeHtml($item->getSslBaseUrl()); ?></td>
-                                <td><?= $this->escapeHtml($item->getCdnUrl()); ?></td>
-                                <td><?= $this->escapeHtml($item->getSslCdnUrl()); ?></td>
-                                <td><?= $this->escapeHtml($item->isForcessl()); ?></td>
-                                <td><?= $this->escapeHtml($item->getLocale()); ?></td>
-                                <td><?= $this->escapeHtml($item->getTimezone()); ?></td>
+                                <td><?= $this->escapeHtml($item->getTemplate()); ?></td>
                                 <td class="text-center">
-
-                                    <?php /** @var string $identifierTrashModal */ ?>
-                                    <?php $identifierTrashModal = "modal-confirm-{$item->getId()}"; ?>
-
-                                    <ul class="icons-list">
-
-                                        <?php if ($this->isAllowed($this->config->get('resource'), 'edit')): ?>
-                                            <li>
-                                                <a href="<?= $this->url($this->config->get('route_name'), ['action' => 'edit', 'id' => $item->getId()]); ?>">
-                                                    <i class="icon-pencil"></i>
-                                                </a>
-                                            </li>
-                                        <?php endif; ?>
-
-                                        <?php if ($this->isAllowed($this->config->get('resource'), 'drop')): ?>
-
-                                            <li class="text-danger-600">
-                                                <a href="#"
-                                                   data-toggle="modal"
-                                                   data-target="#<?= $identifierTrashModal; ?>">
-                                                    <i class="icon-trash"></i>
-                                                </a>
-                                            </li>
-                                        <?php endif; ?>
-
-                                    </ul>
-
-                                    <!-- Modal -->
-                                    <div class="modal fade"
-                                         id="<?= $identifierTrashModal; ?>"
-                                         tabindex="-1" role="dialog">
-                                        <div class="modal-dialog modal-sm" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Are you sure?</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>Do you want to delete the entry?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button"
-                                                            class="btn btn-default"
-                                                            data-dismiss="modal">
-                                                        Cancel
-                                                    </button>
-                                                    <a href="<?= $this->url($this->config->get('route_name'), [
-                                                        'action' => 'drop',
-                                                        'id' => $item->getId()
-                                                    ]); ?>" class="btn btn-primary">
-                                                        Yes, delete it!
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    <?= $this->partial('partial/actions.phtml', [
+                                        'matchedRouteName' => $this->matchedRouteName,
+                                        'identifier' => $item->getId()
+                                    ]); ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -162,7 +96,7 @@ $this->headScript()
                     </table>
 
                     <?= $this->paginationControl($this->paginator, 'sliding', 'partial/pagination.phtml', [
-                        'route' => $this->config->get('route_name')
+                        'route' => $this->matchedRouteName
                     ]); ?>
 
                 </div>

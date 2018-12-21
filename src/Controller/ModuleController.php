@@ -7,28 +7,31 @@ namespace MSBios\CPanel\Doctrine\Controller;
 
 use MSBios\CPanel\Controller\ModuleController as DefaultModuleController;
 use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractActionController;
-use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
 use MSBios\Resource\Doctrine\Entity\Module;
 
 /**
  * Class ModuleController
  * @package MSBios\CPanel\Doctrine\Controller
  */
-class ModuleController extends AbstractActionController // AbstractLazyActionController
+class ModuleController extends AbstractActionController
 {
     /**
-     * ModuleController constructor.
-     */
-    public function __construct()
-    {
-        $this->setObjectPrototype(new Module);
-    }
-
-    /**
+     * @inheritdoc
+     *
      * @return string
      */
     public function getResourceId()
     {
         return DefaultModuleController::class;
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @return mixed|Module
+     */
+    protected static function factory()
+    {
+        return new Module;
     }
 }

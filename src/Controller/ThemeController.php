@@ -7,28 +7,31 @@ namespace MSBios\CPanel\Doctrine\Controller;
 
 use MSBios\CPanel\Controller\ThemeController as DefaultThemeController;
 use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractActionController;
-use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
 use MSBios\Resource\Doctrine\Entity\Theme;
 
 /**
  * Class ThemeController
  * @package MSBios\CPanel\Doctrine\Controller
  */
-class ThemeController extends AbstractActionController // AbstractLazyActionController
+class ThemeController extends AbstractActionController
 {
     /**
-     * ThemeController constructor.
-     */
-    public function __construct()
-    {
-        $this->setObjectPrototype(new Theme);
-    }
-
-    /**
+     * @inheritdoc
+     *
      * @return string
      */
     public function getResourceId()
     {
         return DefaultThemeController::class;
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @return mixed|Theme
+     */
+    protected static function factory()
+    {
+        return new Theme;
     }
 }

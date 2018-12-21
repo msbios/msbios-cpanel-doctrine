@@ -2306,16 +2306,16 @@
         },
         {
             "name": "msbios/guard-cpanel-doctrine",
-            "version": "v1.0.13",
+            "version": "v1.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/msbios/msbios-guard-cpanel-doctrine.git",
-                "reference": "5f22a1b209e35a879f291cfdd5a671789d6e56fc"
+                "reference": "1d5b59c2636b540c80ed889e30bf24139803e124"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/msbios/msbios-guard-cpanel-doctrine/zipball/5f22a1b209e35a879f291cfdd5a671789d6e56fc",
-                "reference": "5f22a1b209e35a879f291cfdd5a671789d6e56fc",
+                "url": "https://api.github.com/repos/msbios/msbios-guard-cpanel-doctrine/zipball/1d5b59c2636b540c80ed889e30bf24139803e124",
+                "reference": "1d5b59c2636b540c80ed889e30bf24139803e124",
                 "shasum": ""
             },
             "require": {
@@ -2362,7 +2362,7 @@
             "keywords": [
                 "php"
             ],
-            "time": "2018-03-21T14:14:54+00:00"
+            "time": "2018-12-21T10:33:33+00:00"
         },
         {
             "name": "msbios/guard-developer-tools",
@@ -2520,16 +2520,16 @@
         },
         {
             "name": "msbios/guard-resource-doctrine",
-            "version": "v1.0.41",
+            "version": "v1.0.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/msbios/msbios-guard-resource-doctrine.git",
-                "reference": "a5cacc0e6eba0dd7e1d8feae67de0eee51500118"
+                "reference": "6a141f379f85877f5d0b5d349468eaa6d07e00ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/msbios/msbios-guard-resource-doctrine/zipball/a5cacc0e6eba0dd7e1d8feae67de0eee51500118",
-                "reference": "a5cacc0e6eba0dd7e1d8feae67de0eee51500118",
+                "url": "https://api.github.com/repos/msbios/msbios-guard-resource-doctrine/zipball/6a141f379f85877f5d0b5d349468eaa6d07e00ff",
+                "reference": "6a141f379f85877f5d0b5d349468eaa6d07e00ff",
                 "shasum": ""
             },
             "require-dev": {
@@ -2573,7 +2573,7 @@
             "keywords": [
                 "php"
             ],
-            "time": "2018-12-21T09:27:49+00:00"
+            "time": "2018-12-21T10:19:54+00:00"
         },
         {
             "name": "msbios/hydrator",

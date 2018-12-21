@@ -6,8 +6,6 @@
 
 namespace MSBios\CPanel\Doctrine;
 
-use Zend\ServiceManager\Factory\InvokableFactory;
-
 return [
 
     'doctrine' => [
@@ -27,15 +25,15 @@ return [
             Controller\LayoutController::class =>
                 Factory\ControllerFactory::class,
             Controller\ModuleController::class =>
-                InvokableFactory::class,
+                Factory\ControllerFactory::class,
             Controller\PageTypeController::class =>
-                InvokableFactory::class,
+                Factory\ControllerFactory::class,
             Controller\RouteController::class =>
-                InvokableFactory::class,
+                Factory\ControllerFactory::class,
             Controller\SettingController::class =>
-                InvokableFactory::class,
+                Factory\ControllerFactory::class,
             Controller\ThemeController::class =>
-                InvokableFactory::class,
+                Factory\ControllerFactory::class,
         ],
         'aliases' => [
             \MSBios\CPanel\Controller\IndexController::class =>
@@ -52,16 +50,6 @@ return [
                 Controller\SettingController::class,
             \MSBios\CPanel\Controller\ThemeController::class =>
                 Controller\ThemeController::class
-        ],
-        'initializers' => [
-            //Initializer\LazyControllerInitializer::class =>
-            //    new Initializer\LazyControllerInitializer, // todo remove in future
-            //ObjectManagerInitializer::class =>
-            //    new ObjectManagerInitializer,
-            //FormElementManagerInitializer::class =>
-            //    new FormElementManagerInitializer,
-            //HydratorManagerInitializer::class =>
-            //    new HydratorManagerInitializer
         ],
     ],
 
@@ -98,6 +86,11 @@ return [
                         __DIR__ . '/../themes/limitless/view/ms-bios/c-panel/doctrine/page-type/form.phtml',
                     'ms-bios/c-panel/doctrine/page-type/edit' =>
                         __DIR__ . '/../themes/limitless/view/ms-bios/c-panel/doctrine/page-type/form.phtml',
+
+                    'ms-bios/c-panel/doctrine/theme/add' =>
+                        __DIR__ . '/../themes/limitless/view/ms-bios/c-panel/doctrine/theme/form.phtml',
+                    'ms-bios/c-panel/doctrine/theme/edit' =>
+                        __DIR__ . '/../themes/limitless/view/ms-bios/c-panel/doctrine/theme/form.phtml',
                 ],
                 // Template Path Stack
                 'template_path_stack' => [

@@ -8,28 +8,27 @@ namespace MSBios\CPanel\Doctrine\Controller;
 
 use MSBios\CPanel\Controller\SettingController as DefaultSettingController;
 use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractActionController;
-use MSBios\CPanel\Doctrine\Mvc\Controller\AbstractLazyActionController;
-use MSBios\Resource\Doctrine\Entity\Session;
+use MSBios\Resource\Record\Setting;
 
 /**
  * Class SettingController
  * @package MSBios\CPanel\Controller
  */
-class SettingController extends AbstractActionController // AbstractLazyActionController
+class SettingController extends AbstractActionController
 {
-    /**
-     * SettingController constructor.
-     */
-    public function __construct()
-    {
-        $this->setObjectPrototype(new Session);
-    }
-
     /**
      * @return string
      */
     public function getResourceId()
     {
         return DefaultSettingController::class;
+    }
+
+    /**
+     * @return mixed|Setting
+     */
+    protected static function factory()
+    {
+        return new Setting;
     }
 }
