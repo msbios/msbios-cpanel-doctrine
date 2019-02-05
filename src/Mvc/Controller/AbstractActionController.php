@@ -394,4 +394,14 @@ abstract class AbstractActionController extends DefaultAbstractActionController 
         return $this->redirect()
             ->toRoute($this->getMatchedRouteName());
     }
+
+    /**
+     * @inheritdoc
+     *
+     * @return string
+     */
+    public function getResourceId()
+    {
+        return static::class;
+    }
 }
